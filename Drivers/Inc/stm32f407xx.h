@@ -9,81 +9,116 @@
 /*
  * Memory base addresses
  */
-#define FLASH_BASE_ADDR 0x08000000U // main memory base address
-#define SRAM1_BASE_ADDR 0x20000000U // sram1 base address
-#define SRAM2_BASE_ADDR 0x2001C000U // sram2 base address
-#define ROM_BASE_ADDR 0x1fff0000U // system memory base address
+#define FLASH_BASE_ADDR 0x08000000u // main memory base address
+#define SRAM1_BASE_ADDR 0x20000000u // sram1 base address
+#define SRAM2_BASE_ADDR 0x2001C000u // sram2 base address
+#define ROM_BASE_ADDR 0x1fff0000u // system memory base address
 #define SRAM SRAM1_BASE_ADDR
 
 /*
  * AHBx and APBx base addresses
  */
-#define PERI_BASE_ADDR 0x40000000U
+#define PERI_BASE_ADDR 0x40000000u
 #define APB1_BASE_ADDR PERI_BASE_ADDR
-#define APB2_BASE_ADDR 0x40010000U
-#define AHB1_BASE_ADDR 0x40020000U
-#define AHB2_BASE_ADDR 0x50000000U
+#define APB2_BASE_ADDR 0x40010000u
+#define AHB1_BASE_ADDR 0x40020000u
+#define AHB2_BASE_ADDR 0x50000000u
 
 /*
  * AHB1 peripheral base addresses
  */
 
-#define GPIOA_BASE_ADDR (AHB1_BASE_ADDR + 0x00U)
-#define GPIOB_BASE_ADDR (AHB1_BASE_ADDR + 0x04U)
-#define GPIOC_BASE_ADDR (AHB1_BASE_ADDR + 0x08U)
-#define GPIOD_BASE_ADDR (AHB1_BASE_ADDR + 0x0cU)
-#define GPIOE_BASE_ADDR (AHB1_BASE_ADDR + 0x10U)
-#define GPIOF_BASE_ADDR (AHB1_BASE_ADDR + 0x14U)
-#define GPIOG_BASE_ADDR (AHB1_BASE_ADDR + 0x18U)
-#define GPIOH_BASE_ADDR (AHB1_BASE_ADDR + 0x1cU)
-#define GPIOI_BASE_ADDR (AHB1_BASE_ADDR + 0x20U)
+#define GPIOA_BASE_ADDR (AHB1_BASE_ADDR + 0x0u)
+#define GPIOB_BASE_ADDR (AHB1_BASE_ADDR + 0x04u)
+#define GPIOC_BASE_ADDR (AHB1_BASE_ADDR + 0x08u)
+#define GPIOD_BASE_ADDR (AHB1_BASE_ADDR + 0x0cu)
+#define GPIOE_BASE_ADDR (AHB1_BASE_ADDR + 0x10u)
+#define GPIOF_BASE_ADDR (AHB1_BASE_ADDR + 0x14u)
+#define GPIOG_BASE_ADDR (AHB1_BASE_ADDR + 0x18u)
+#define GPIOH_BASE_ADDR (AHB1_BASE_ADDR + 0x1cu)
+#define GPIOI_BASE_ADDR (AHB1_BASE_ADDR + 0x20u)
+
+#define RCC_BASE_ADDR (AHB1_BASE_ADDR + 0x38u)
 
 /*
  * APB1 peripheral base addresses
  */
 
-#define I2C1_BASE_ADDR (APB1_BASE_ADDR + 0x54U)
-#define I2C2_BASE_ADDR (APB1_BASE_ADDR + 0x58U)
-#define I2C3_BASE_ADDR (APB1_BASE_ADDR + 0x5cU)
+#define I2C1_BASE_ADDR (APB1_BASE_ADDR + 0x54u)
+#define I2C2_BASE_ADDR (APB1_BASE_ADDR + 0x58u)
+#define I2C3_BASE_ADDR (APB1_BASE_ADDR + 0x5cu)
 
-#define SPI2_BASE_ADDR (APB1_BASE_ADDR + 0x38U)
-#define SPI3_BASE_ADDR (APB1_BASE_ADDR + 0x3cU)
+#define SPI2_BASE_ADDR (APB1_BASE_ADDR + 0x38u)
+#define SPI3_BASE_ADDR (APB1_BASE_ADDR + 0x3cu)
 
-#define USART2_BASE_ADDR (APB1_BASE_ADDR + 0x44U)
-#define USART3_BASE_ADDR (APB1_BASE_ADDR + 0x48U)
+#define USART2_BASE_ADDR (APB1_BASE_ADDR + 0x44u)
+#define USART3_BASE_ADDR (APB1_BASE_ADDR + 0x48u)
 
-#define UART4_BASE_ADDR (APB1_BASE_ADDR + 0x4CU)
-#define UART5_BASE_ADDR (APB1_BASE_ADDR + 0x50U)
+#define UART4_BASE_ADDR (APB1_BASE_ADDR + 0x4Cu)
+#define UART5_BASE_ADDR (APB1_BASE_ADDR + 0x50u)
 
 /*
  * APB2 peripheral base addresses
  */
 
-#define EXT1_BASE_ADDR (APB2_BASE_ADDR + 0x3cU)
-#define SPI1_BASE_ADDR (APB2_BASE_ADDR + 0x30U)
-#define SYSCFG_BASE_ADDR (APB2_BASE_ADDR + 0x38U)
-#define USART1_BASE_ADDR (APB2_BASE_ADDR + 0x10U)
-#define USART6_BASE_ADDR (APB2_BASE_ADDR + 0x14U)
+#define EXT1_BASE_ADDR (APB2_BASE_ADDR + 0x3cu)
+#define SPI1_BASE_ADDR (APB2_BASE_ADDR + 0x30u)
+#define SYSCFG_BASE_ADDR (APB2_BASE_ADDR + 0x38u)
+#define USART1_BASE_ADDR (APB2_BASE_ADDR + 0x10u)
+#define USART6_BASE_ADDR (APB2_BASE_ADDR + 0x14u)
 
-
-#define _vo volatile
+#define _reg volatile uint32_t
 
 /*
  * Peripheral structure definitions
  */
 
-
 typedef struct GPIO_RegDef_t {
-	_vo uint32_t MODER;
-	_vo uint32_t OTYPER;
-	_vo uint32_t OSPEEDR;
-	_vo uint32_t PUPDR;
-	_vo uint32_t IDR;
-	_vo uint32_t ODR;
-	_vo uint32_t BSRR;
-	_vo uint32_t LCKR;
-	_vo uint32_t AFR[2];
+	_reg MODER;
+	_reg OTYPER;
+	_reg OSPEEDR;
+	_reg PUPDR;
+	_reg IDR;
+	_reg ODR;
+	_reg BSRR;
+	_reg LCKR;
+	_reg AFR[2];
 } GPIO_RegDef_t;
+
+typedef struct RCC_RegDef_t {
+	_reg RC;
+	_reg PLLCFGR;
+	_reg CFGR;
+	_reg CIR;
+	_reg AHB1RSTR;
+	_reg AHB2RSTR;
+	_reg AHB3RSTR;
+	uint32_t _res1;
+	_reg APB1RSTR;
+	_reg APB2RSTR;
+	uint32_t _res2[2];
+	_reg AHB1ENR;
+	_reg AHB2ENR;
+	_reg AHB3ENR;
+	uint32_t __res3;
+	_reg APB1ENR;
+	_reg APB2ENR;
+	uint32_t __res4[2];
+	_reg AHB1LPENR;
+	_reg AHB2LPENR;
+	_reg AHB3LPENR;
+	uint32_t __res5;
+	_reg APB1LPENR;
+	_reg APB2LPENR;
+	uint32_t __res6[2];
+	_reg BCDR;
+	_reg CSR;
+	uint32_t __res7[2];
+	_reg SSCGR;
+	_reg PLLI2CFGR;
+	_reg PLLSAICFGR;
+	_reg DCKCFGR;
+} RCC_RegDef_t;
 
 /*
  * Peripheral definitions
@@ -99,5 +134,106 @@ typedef struct GPIO_RegDef_t {
 #define GPIOH ((GPIO_RegDef_t*)GPIOH_BASE_ADDR)
 #define GPIOI ((GPIO_RegDef_t*)GPIOI_BASE_ADDR)
 
+#define RCC ((RCC_RegDef_t*)RCC_BASE_ADDR)
+
+/*
+ * Clock enable macros for GPIOx peripherals
+ */
+
+#define GPIOA_PCLK_EN() (RCC->AHB1ENR |= (1 << 0x0u))
+#define GPIOB_PCLK_EN() (RCC->AHB1ENR |= (1 << 0x1u))
+#define GPIOC_PCLK_EN() (RCC->AHB1ENR |= (1 << 0x2u))
+#define GPIOD_PCLK_EN() (RCC->AHB1ENR |= (1 << 0x3u))
+#define GPIOE_PCLK_EN() (RCC->AHB1ENR |= (1 << 0x4u))
+#define GPIOF_PCLK_EN() (RCC->AHB1ENR |= (1 << 0x5u))
+#define GPIOG_PCLK_EN() (RCC->AHB1ENR |= (1 << 0x6u))
+#define GPIOH_PCLK_EN() (RCC->AHB1ENR |= (1 << 0x7u))
+#define GPIOI_PCLK_EN() (RCC->AHB1ENR |= (1 << 0x8u))
+#define GPIOJ_PCLK_EN() (RCC->AHB1ENR |= (1 << 0x9u))
+#define GPIOK_PCLK_EN() (RCC->AHB1ENR |= (1 << 0xau))
+
+/*
+ * Clock enable macros for I2Cx peripherals
+ */
+
+#define I2C1_PCLK_EN() (RCC->APB1ENR |= (1 << 0x15u))
+#define I2C2_PCLK_EN() (RCC->APB1ENR |= (1 << 0x16u))
+#define I2C3_PCLK_EN() (RCC->APB1ENR |= (1 << 0x17u))
+
+/*
+ * Clock enable macros for SPIx peripherals
+ */
+
+#define SPI1_PCLK_EN() (RCC->APB2ENR |= (1 << 0xcu))
+#define SPI2_PCLK_EN() (RCC->APB1ENR |= (1 << 0xeu))
+#define SPI3_PCLK_EN() (RCC->APB1ENR |= (1 << 0xfu))
+#define SPI4_PCLK_EN() (RCC->APB2ENR |= (1 << 0xdu))
+#define SPI5_PCLK_EN() (RCC->APB2ENR |= (1 << 0x14u))
+#define SPI6_PCLK_EN() (RCC->APB2ENR |= (1 << 0x15u))
+
+/*
+ * Clock enable macros for USARTx peripherals
+ */
+
+#define USART1_PCLK_EN() (RCC->APB2ENR |= (1 << 0x4u))
+#define USART2_PCLK_EN() (RCC->APB1ENR |= (1 << 0x11u))
+#define USART3_PCLK_EN() (RCC->APB1ENR |= (1 << 0x12u))
+#define USART6_PCLK_EN() (RCC->APB2ENR |= (1 << 0x5u))
+
+/*
+ * Clock enable macros for SYSCFG peripherals
+ */
+
+#define SYSCFG_PCLK_EN() (RCC->APB2ENR |= (1 << 0xeu))
+
+/*
+ * Clock disable macros for GPIOx peripherals
+ */
+
+#define GPIOA_PCLK_DI() (RCC->AHB1ENR &= ~(1 << 0x0u))
+#define GPIOB_PCLK_DI() (RCC->AHB1ENR &= ~(1 << 0x1u))
+#define GPIOC_PCLK_DI() (RCC->AHB1ENR &= ~(1 << 0x2u))
+#define GPIOD_PCLK_DI() (RCC->AHB1ENR &= ~(1 << 0x3u))
+#define GPIOE_PCLK_DI() (RCC->AHB1ENR &= ~(1 << 0x4u))
+#define GPIOF_PCLK_DI() (RCC->AHB1ENR &= ~(1 << 0x5u))
+#define GPIOG_PCLK_DI() (RCC->AHB1ENR &= ~(1 << 0x6u))
+#define GPIOH_PCLK_DI() (RCC->AHB1ENR &= ~(1 << 0x7u))
+#define GPIOI_PCLK_DI() (RCC->AHB1ENR &= ~(1 << 0x8u))
+#define GPIOJ_PCLK_EN() (RCC->AHB1ENR &= ~(1 << 0x9u))
+#define GPIOK_PCLK_EN() (RCC->AHB1ENR &= ~(1 << 0xau))
+
+/*
+ * Clock disable macros for I2Cx peripherals
+ */
+
+#define I2C1_PCLK_DI() (RCC->APB1ENR &= ~(1 << 0x15u))
+#define I2C2_PCLK_DI() (RCC->APB1ENR &= ~(1 << 0x16u))
+#define I2C3_PCLK_DI() (RCC->APB1ENR &= ~(1 << 0x17u))
+
+/*
+ * Clock disable macros for SPIx peripherals
+ */
+
+#define SPI1_PCLK_DI() (RCC->APB2ENR &= ~(1 << 0xcu))
+#define SPI2_PCLK_DI() (RCC->APB1ENR &= ~(1 << 0xeu))
+#define SPI3_PCLK_DI() (RCC->APB1ENR &= ~(1 << 0xfu))
+#define SPI4_PCLK_EN() (RCC->APB2ENR &= ~(1 << 0xdu))
+#define SPI5_PCLK_EN() (RCC->APB2ENR &= ~(1 << 0x14u))
+#define SPI6_PCLK_EN() (RCC->APB2ENR &= ~(1 << 0x15u))
+
+/*
+ * Clock disable macros for USARTx peripherals
+ */
+
+#define USART1_PCLK_DI() (RCC->APB2ENR &= ~(1 << 0x4u))
+#define USART2_PCLK_DI() (RCC->APB1ENR &= ~(1 << 0x11u))
+#define USART3_PCLK_DI() (RCC->APB1ENR &= ~(1 << 0x12u))
+#define USART6_PCLK_EN() (RCC->APB2ENR &= ~(1 << 0x5u))
+
+/*
+ * Clock disable macros for SYSCFG peripherals
+ */
+
+#define SYSCFG_PCLK_DI() (RCC->APB2ENR &= ~(1 << 0xeu))
 
 #endif /* INC_STM32F407XX_H_ */
