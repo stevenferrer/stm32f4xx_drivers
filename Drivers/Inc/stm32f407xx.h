@@ -6,6 +6,8 @@
 #ifndef INC_STM32F407XX_H_
 #define INC_STM32F407XX_H_
 
+#include <stdint.h>
+
 /*
  * Memory base addresses
  */
@@ -116,8 +118,6 @@ typedef struct RCC_RegDef_t {
 	uint32_t __res7[2];
 	_reg SSCGR;
 	_reg PLLI2CFGR;
-	_reg PLLSAICFGR;
-	_reg DCKCFGR;
 } RCC_RegDef_t;
 
 /*
@@ -149,8 +149,6 @@ typedef struct RCC_RegDef_t {
 #define GPIOG_PCLK_EN() (RCC->AHB1ENR |= (1 << 0x6u))
 #define GPIOH_PCLK_EN() (RCC->AHB1ENR |= (1 << 0x7u))
 #define GPIOI_PCLK_EN() (RCC->AHB1ENR |= (1 << 0x8u))
-#define GPIOJ_PCLK_EN() (RCC->AHB1ENR |= (1 << 0x9u))
-#define GPIOK_PCLK_EN() (RCC->AHB1ENR |= (1 << 0xau))
 
 /*
  * Clock enable macros for I2Cx peripherals
@@ -167,9 +165,6 @@ typedef struct RCC_RegDef_t {
 #define SPI1_PCLK_EN() (RCC->APB2ENR |= (1 << 0xcu))
 #define SPI2_PCLK_EN() (RCC->APB1ENR |= (1 << 0xeu))
 #define SPI3_PCLK_EN() (RCC->APB1ENR |= (1 << 0xfu))
-#define SPI4_PCLK_EN() (RCC->APB2ENR |= (1 << 0xdu))
-#define SPI5_PCLK_EN() (RCC->APB2ENR |= (1 << 0x14u))
-#define SPI6_PCLK_EN() (RCC->APB2ENR |= (1 << 0x15u))
 
 /*
  * Clock enable macros for USARTx peripherals
@@ -199,8 +194,6 @@ typedef struct RCC_RegDef_t {
 #define GPIOG_PCLK_DI() (RCC->AHB1ENR &= ~(1 << 0x6u))
 #define GPIOH_PCLK_DI() (RCC->AHB1ENR &= ~(1 << 0x7u))
 #define GPIOI_PCLK_DI() (RCC->AHB1ENR &= ~(1 << 0x8u))
-#define GPIOJ_PCLK_EN() (RCC->AHB1ENR &= ~(1 << 0x9u))
-#define GPIOK_PCLK_EN() (RCC->AHB1ENR &= ~(1 << 0xau))
 
 /*
  * Clock disable macros for I2Cx peripherals
@@ -217,9 +210,6 @@ typedef struct RCC_RegDef_t {
 #define SPI1_PCLK_DI() (RCC->APB2ENR &= ~(1 << 0xcu))
 #define SPI2_PCLK_DI() (RCC->APB1ENR &= ~(1 << 0xeu))
 #define SPI3_PCLK_DI() (RCC->APB1ENR &= ~(1 << 0xfu))
-#define SPI4_PCLK_EN() (RCC->APB2ENR &= ~(1 << 0xdu))
-#define SPI5_PCLK_EN() (RCC->APB2ENR &= ~(1 << 0x14u))
-#define SPI6_PCLK_EN() (RCC->APB2ENR &= ~(1 << 0x15u))
 
 /*
  * Clock disable macros for USARTx peripherals
