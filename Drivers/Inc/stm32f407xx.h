@@ -173,7 +173,6 @@ typedef struct RCC_RegDef_t {
 #define USART1_PCLK_EN() (RCC->APB2ENR |= (1 << 0x4u))
 #define USART2_PCLK_EN() (RCC->APB1ENR |= (1 << 0x11u))
 #define USART3_PCLK_EN() (RCC->APB1ENR |= (1 << 0x12u))
-#define USART6_PCLK_EN() (RCC->APB2ENR |= (1 << 0x5u))
 
 /*
  * Clock enable macros for SYSCFG peripherals
@@ -218,7 +217,6 @@ typedef struct RCC_RegDef_t {
 #define USART1_PCLK_DI() (RCC->APB2ENR &= ~(1 << 0x4u))
 #define USART2_PCLK_DI() (RCC->APB1ENR &= ~(1 << 0x11u))
 #define USART3_PCLK_DI() (RCC->APB1ENR &= ~(1 << 0x12u))
-#define USART6_PCLK_EN() (RCC->APB2ENR &= ~(1 << 0x5u))
 
 /*
  * Clock disable macros for SYSCFG peripherals
