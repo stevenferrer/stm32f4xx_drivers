@@ -22,17 +22,19 @@ typedef struct GPIO_Handle_t {
 	GPIO_PinConfig_t GPIO_PinConfig;
 } GPIO_Handle_t;
 
-void GPIO_Init(void);
-void GPIO_DeInit(void);
-void GPIO_PClockCtrl(void);
+void GPIO_PeriClockCtrl(GPIO_RegDef_t *pGPIOx, uint8_t enable);
 
-void GPIO_ReadInputPin(void);
-void GPIO_ReadInputPort(void);
-void GPIO_WriteOutputPin(void);
-void GPIO_WriteOutputPort(void);
-void GPIO_ToggleOutputPin(void);
+void GPIO_Init(GPIO_Handle_t *pGPIOHandle);
+void GPIO_DeInit(GPIO_Handle_t *pGPIOHandle);
 
-void GPIO_IRQConfig(void);
-void GPIO_IRQHandling(void);
+uint8_t GPIO_ReadInputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber);
+uint16_t GPIO_ReadInputPort(GPIO_RegDef_t *pGPIOx);
+void GPIO_WriteOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber,
+		uint8_t value);
+void GPIO_WriteOutputPort(GPIO_RegDef_t *pGPIOx, uint16_t value);
+void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber);
+
+void GPIO_IRQConfig(uint8_t irqNumber, uint8_t irqPriority, uint8_t enable);
+void GPIO_IRQHandling(uint8_t pinNumber);
 
 #endif /* INC_STM32F407XX_GPIO_H_ */

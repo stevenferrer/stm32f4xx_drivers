@@ -224,4 +224,11 @@ typedef struct RCC_RegDef_t {
 
 #define SYSCFG_PCLK_DI() (RCC->APB2ENR &= ~(1 << 0xeu))
 
+
+// Generic macros
+#define ENABLE 1
+#define DISABLE 0
+#define SET ENABLE
+#define RESET DISABLE
+
 #endif /* INC_STM32F407XX_H_ */
