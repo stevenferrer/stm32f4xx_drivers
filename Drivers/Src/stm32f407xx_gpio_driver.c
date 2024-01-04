@@ -22,46 +22,24 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
 }
 
 void GPIO_PeriClockCtrl(GPIO_RegDef_t *pGPIOx, uint8_t enable) {
-	if (enable == ENABLE) {
-		if (pGPIOx == GPIOA) {
-			GPIOA_PCLK_EN();
-		} else if (pGPIOx == GPIOB) {
-			GPIOB_PCLK_EN();
-		} else if (pGPIOx == GPIOC) {
-			GPIOC_PCLK_EN();
-		} else if (pGPIOx == GPIOD) {
-			GPIOD_PCLK_EN();
-		} else if (pGPIOx == GPIOE) {
-			GPIOE_PCLK_EN();
-		} else if (pGPIOx == GPIOF) {
-			GPIOF_PCLK_EN();
-		} else if (pGPIOx == GPIOG) {
-			GPIOG_PCLK_EN();
-		} else if (pGPIOx == GPIOH) {
-			GPIOH_PCLK_EN();
-		} else if (pGPIOx == GPIOI) {
-			GPIOI_PCLK_EN();
-		}
-	} else {
-		if (pGPIOx == GPIOA) {
-			GPIOA_PCLK_DI();
-		} else if (pGPIOx == GPIOB) {
-			GPIOB_PCLK_DI()();
-		} else if (pGPIOx == GPIOC) {
-			GPIOC_PCLK_DI();
-		} else if (pGPIOx == GPIOD) {
-			GPIOD_PCLK_DI();
-		} else if (pGPIOx == GPIOE) {
-			GPIOE_PCLK_DI();
-		} else if (pGPIOx == GPIOF) {
-			GPIOF_PCLK_DI();
-		} else if (pGPIOx == GPIOG) {
-			GPIOG_PCLK_DI();
-		} else if (pGPIOx == GPIOH) {
-			GPIOH_PCLK_DI();
-		} else if (pGPIOx == GPIOI) {
-			GPIOI_PCLK_DI();
-		}
+	if (pGPIOx == GPIOA) {
+		enable == ENABLE ? GPIOA_PCLK_EN() : GPIOA_PCLK_DI();
+	} else if (pGPIOx == GPIOB) {
+		enable == ENABLE ? GPIOB_PCLK_EN() : GPIOB_PCLK_DI();
+	} else if (pGPIOx == GPIOC) {
+		enable == ENABLE ? GPIOC_PCLK_EN() : GPIOC_PCLK_DI();
+	} else if (pGPIOx == GPIOD) {
+		enable == ENABLE ? GPIOD_PCLK_EN() : GPIOD_PCLK_DI();
+	} else if (pGPIOx == GPIOE) {
+		enable == ENABLE ? GPIOE_PCLK_EN() : GPIOE_PCLK_DI();
+	} else if (pGPIOx == GPIOF) {
+		enable == ENABLE ? GPIOF_PCLK_EN() : GPIOF_PCLK_DI();
+	} else if (pGPIOx == GPIOG) {
+		enable == ENABLE ? GPIOG_PCLK_EN() : GPIOG_PCLK_DI();
+	} else if (pGPIOx == GPIOH) {
+		enable == ENABLE ? GPIOH_PCLK_EN() : GPIOH_PCLK_DI();
+	} else if (pGPIOx == GPIOI) {
+		enable == ENABLE ? GPIOI_PCLK_EN() : GPIOI_PCLK_DI();
 	}
 }
 
