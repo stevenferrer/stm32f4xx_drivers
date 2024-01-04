@@ -5,22 +5,6 @@
 
 #include <stm32f407xx_gpio_driver.h>
 
-/*
- * @fn
- *
- * @breif
- *
- * @param[in]
- * @param[in]
- * @param[in]
- *
- * @return
- *
- * @note
- */
-void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
-}
-
 void GPIO_PeriClockCtrl(GPIO_RegDef_t *pGPIOx, uint8_t enable) {
 	if (pGPIOx == GPIOA) {
 		enable == ENABLE ? GPIOA_PCLK_EN() : GPIOA_PCLK_DI();
@@ -41,6 +25,27 @@ void GPIO_PeriClockCtrl(GPIO_RegDef_t *pGPIOx, uint8_t enable) {
 	} else if (pGPIOx == GPIOI) {
 		enable == ENABLE ? GPIOI_PCLK_EN() : GPIOI_PCLK_DI();
 	}
+}
+
+/*
+ * @fn
+ *
+ * @breif
+ *
+ * @param[in]
+ * @param[in]
+ * @param[in]
+ *
+ * @return
+ *
+ * @note
+ */
+void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
+	// 1. configure the mode of gpio pin
+	// 2. configure speed
+	// 3. configure pupd resistor
+	// 4. configure optype
+	// 5. configure alt functionality
 }
 
 void GPIO_DeInit(GPIO_Handle_t *pGPIOHandle) {
