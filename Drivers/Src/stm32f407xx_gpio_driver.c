@@ -41,11 +41,35 @@ void GPIO_PeriClockCtrl(GPIO_RegDef_t *pGPIOx, uint8_t enable) {
  * @note
  */
 void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
-	// 1. configure the mode of gpio pin
+	uint32_t temp = 0;
+	const uint8_t pinNumber = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber;
+
+	// 1. configure the mode of GPIO pin
+	if (pinMode <= GPIO_MODE_ANALOG) {
+		// non-interrupt mode
+		// multiply by 2 bc each pin takes 2 bit fields
+		temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode << (2 * pinNumber));
+		pGPIOHandle->pGPIOx->MODER = temp;
+	} else {
+		// interrupt mode
+	}
+
 	// 2. configure speed
-	// 3. configure pupd resistor
-	// 4. configure optype
-	// 5. configure alt functionality
+	temp = pGPIOHandle->GPIO_PinConfig.GPIO_PinSpeed << (2 * pinNumber);
+	pGPIOHandle->pGPIOx->OSPEEDR = temp;
+
+	// 3. configure pull-up/pull-down register
+	temp = pGPIOHandle->GPIO_PinConfig.GPIO_PinPuPdControl << (2 * pinNumber);
+	pGPIOHandle->pGPIOx->PUPDR = temp;
+
+	// 4. configure op-type
+	temp = pGPIOHandle->GPIO_PinConfig.GPIO_PinOPType << pinNumber;
+	pGPIOHandle->pGPIOx->OTYPER = temp;
+
+	// 5. configure alternate functionality
+	if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_ALTFN) {
+
+	}
 }
 
 void GPIO_DeInit(GPIO_Handle_t *pGPIOHandle) {
