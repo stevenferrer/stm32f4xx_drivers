@@ -25,7 +25,7 @@ typedef struct GPIO_Handle_t {
 void GPIO_PeriClockCtrl(GPIO_RegDef_t *pGPIOx, uint8_t enable);
 
 void GPIO_Init(GPIO_Handle_t *pGPIOHandle);
-void GPIO_DeInit(GPIO_Handle_t *pGPIOHandle);
+void GPIO_DeInit(GPIO_RegDef_t *pGPIOx);
 
 uint8_t GPIO_ReadInputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber);
 uint16_t GPIO_ReadInputPort(GPIO_RegDef_t *pGPIOx);
