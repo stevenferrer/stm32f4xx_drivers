@@ -84,6 +84,25 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
 }
 
 void GPIO_DeInit(GPIO_Handle_t *pGPIOHandle) {
+	if (pGPIOx == GPIOA) {
+		GPIOA_REG_RESET();
+	} else if (pGPIOx == GPIOB) {
+		GPIOB_REG_RESET();
+	} else if (pGPIOx == GPIOC) {
+		GPIOC_REG_RESET();
+	} else if (pGPIOx == GPIOD) {
+		GPIOD_REG_RESET();
+	} else if (pGPIOx == GPIOE) {
+		GPIOE_REG_RESET();
+	} else if (pGPIOx == GPIOF) {
+		GPIOF_REG_RESET();
+	} else if (pGPIOx == GPIOG) {
+		GPIOG_REG_RESET();
+	} else if (pGPIOx == GPIOH) {
+		GPIOH_REG_RESET();
+	} else if (pGPIOx == GPIOI) {
+		GPIOI_REG_RESET();
+	}
 }
 
 uint8_t GPIO_ReadInputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) {
