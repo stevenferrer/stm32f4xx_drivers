@@ -45,30 +45,41 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
 	const uint8_t pinNumber = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber;
 
 	// 1. configure the mode of GPIO pin
-	if (pinMode <= GPIO_MODE_ANALOG) {
+	if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_ANALOG) {
 		// non-interrupt mode
-		// multiply by 2 bc each pin takes 2 bit fields
+		// multiply by 2 bc each pin uses 2 bit fields
 		temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode << (2 * pinNumber));
-		pGPIOHandle->pGPIOx->MODER = temp;
+		pGPIOHandle->pGPIOx->MODER &= ~(0x3 << pinNumber); // clear register
+		pGPIOHandle->pGPIOx->MODER |= temp; // set
 	} else {
 		// interrupt mode
 	}
 
 	// 2. configure speed
 	temp = pGPIOHandle->GPIO_PinConfig.GPIO_PinSpeed << (2 * pinNumber);
-	pGPIOHandle->pGPIOx->OSPEEDR = temp;
+	pGPIOHandle->pGPIOx->OSPEEDR &= ~(0x3 << pinNumber); // clear register
+	pGPIOHandle->pGPIOx->OSPEEDR |= temp;
 
 	// 3. configure pull-up/pull-down register
 	temp = pGPIOHandle->GPIO_PinConfig.GPIO_PinPuPdControl << (2 * pinNumber);
-	pGPIOHandle->pGPIOx->PUPDR = temp;
+	pGPIOHandle->pGPIOx->PUPDR &= ~(0x3 << pinNumber); // clear register
+	pGPIOHandle->pGPIOx->PUPDR |= temp;
 
 	// 4. configure op-type
 	temp = pGPIOHandle->GPIO_PinConfig.GPIO_PinOPType << pinNumber;
-	pGPIOHandle->pGPIOx->OTYPER = temp;
+	pGPIOHandle->pGPIOx->OTYPER &= ~(0x1 << pinNumber); // clear register
+	pGPIOHandle->pGPIOx->OTYPER |= temp;
 
 	// 5. configure alternate functionality
 	if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_ALTFN) {
+		uint8_t afrPos, afrPin;
 
+		afrPos = pinNumber / 8;
+		afrPin = pinNumber % 8;
+
+		pGPIOHandle->pGPIOx->AFR[afrPos] &= ~(0xf << afrPin); // clear register
+		pGPIOHandle->pGPIOx->AFR[afrPos] |=
+				pGPIOHandle->GPIO_PinConfig.GPIO_PinAltFunMode << (4 * afrPin);
 	}
 }
 

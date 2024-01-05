@@ -95,24 +95,24 @@ typedef struct RCC_RegDef_t {
 	_reg AHB1RSTR;
 	_reg AHB2RSTR;
 	_reg AHB3RSTR;
-	uint32_t _res1;
+	uint32_t _res1; // reserved
 	_reg APB1RSTR;
 	_reg APB2RSTR;
-	uint32_t _res2[2];
+	uint32_t _res2[2]; // reserved
 	_reg AHB1ENR;
 	_reg AHB2ENR;
 	_reg AHB3ENR;
-	uint32_t __res3;
+	uint32_t __res3; // reserved
 	_reg APB1ENR;
 	_reg APB2ENR;
-	uint32_t __res4[2];
+	uint32_t __res4[2]; // reserved
 	_reg AHB1LPENR;
 	_reg AHB2LPENR;
 	_reg AHB3LPENR;
-	uint32_t __res5;
+	uint32_t __res5; // reserved
 	_reg APB1LPENR;
 	_reg APB2LPENR;
-	uint32_t __res6[2];
+	uint32_t __res6[2]; // reserved
 	_reg BCDR;
 	_reg CSR;
 	uint32_t __res7[2];
