@@ -76,15 +76,15 @@
  */
 
 typedef struct GPIO_RegDef_t {
-	_reg MODER;
-	_reg OTYPER;
-	_reg OSPEEDR;
-	_reg PUPDR;
-	_reg IDR;
-	_reg ODR;
-	_reg BSRR;
-	_reg LCKR;
-	_reg AFR[2];
+	_reg MODER; // mode register
+	_reg OTYPER; // output type register
+	_reg OSPEEDR; // output speed register
+	_reg PUPDR; // pull-up/pull-down register
+	_reg IDR; // input data register
+	_reg ODR; // output data register
+	_reg BSRR; // bit set/reset register
+	_reg LCKR; // configuration lock register
+	_reg AFR[2]; // alternate function register
 } GPIO_RegDef_t;
 
 typedef struct RCC_RegDef_t {

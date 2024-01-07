@@ -106,11 +106,17 @@ void GPIO_DeInit(GPIO_RegDef_t *pGPIOx) {
 }
 
 uint8_t GPIO_ReadInputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) {
-	return 0;
+	/*
+	 * - left-shift by pinNumber (e.g bit 8 will be shifted to first bit)
+	 * - mask the register by 0x1
+	 * - cast to uint8
+	 * - returns 0 or 1
+	 */
+	return (uint8_t) ((pGPIOx->IDR >> pinNumber) & 0x1);
 }
 
 uint16_t GPIO_ReadInputPort(GPIO_RegDef_t *pGPIOx) {
-	return 0;
+	return (uint16_t) (pGPIOx->IDR);
 }
 
 void GPIO_WriteOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber,
