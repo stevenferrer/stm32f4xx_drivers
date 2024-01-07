@@ -9,7 +9,9 @@
 
 #include <stdint.h>
 
+#define DELAY_NUM 500000
+
 void delay(void) {
-	for (uint32_t i = 0; i < 500000; i++)
+	for (uint32_t i = 0; i < DELAY_NUM/2; i++)
 		;
 }
