@@ -136,6 +136,7 @@ void GPIO_WriteOutputPort(GPIO_RegDef_t *pGPIOx, uint16_t value) {
 }
 
 void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) {
+	pGPIOx->ODR ^= (1 << pinNumber);
 }
 
 void GPIO_IRQConfig(uint8_t irqNumber, uint8_t irqPriority, uint8_t enable) {
