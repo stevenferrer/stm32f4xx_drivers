@@ -3,7 +3,7 @@
 #include "stm32f407xx.h"
 #include "stm32f407xx_gpio_driver.h"
 
-#include "utils.h"
+#include "../utils.h"
 
 void blink(void) {
 	GPIO_Handle_t gpio_led;
@@ -21,7 +21,7 @@ void blink(void) {
 
 	for (;;) {
 		GPIO_ToggleOutputPin(GPIOA, GPIO_PIN_NO_1);
-		delay();
+		delay(2);
 	}
 
 }

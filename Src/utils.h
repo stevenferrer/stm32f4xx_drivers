@@ -8,6 +8,8 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
-void delay(void);
+#include "stdint.h"
+
+void delay(uint32_t div);
 
 #endif /* UTILS_H_ */

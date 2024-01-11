@@ -5,7 +5,7 @@
  *      Author: sf
  */
 
-#include "example1_blinky.h"
+#include "examples/example1_blinky.h"
 
 int main(void){
 	blink();
