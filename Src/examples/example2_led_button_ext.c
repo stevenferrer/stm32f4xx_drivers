@@ -5,7 +5,6 @@
  *      Author: sf
  */
 
-
 #include "example2_led_button_ext.h"
 
 #include "stm32f407xx.h"
@@ -38,10 +37,10 @@ void led_button_ext(void) {
 	GPIO_Init(&gpio_btn);
 
 	for (;;) {
-//		if(GPIO_ReadInputPin(GPIOB, GPIO_PIN_NO_12) == BTN_PRESSED){
+		if (GPIO_ReadInputPin(GPIOB, GPIO_PIN_NO_12) == BTN_PRESSED) {
 			GPIO_ToggleOutputPin(GPIOA, GPIO_PIN_NO_7);
 			delay(2);
-//		}
+		}
 
 	}
 

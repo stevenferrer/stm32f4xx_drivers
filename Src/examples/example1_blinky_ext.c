@@ -26,6 +26,7 @@ void blink_ext(void) {
 
 	GPIO_Init(&gpio_led);
 
+
 	for (;;) {
 		GPIO_ToggleOutputPin(GPIOB, GPIO_PIN_NO_12);
 		delay(2);

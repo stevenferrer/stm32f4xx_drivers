@@ -8,8 +8,7 @@
 void GPIO_PeriClockCtrl(GPIO_RegDef_t *pGPIOx, uint8_t enable) {
 	if (enable == ENABLE) {
 		if (pGPIOx == GPIOA) {
-			 uint32_t tmp = 1 << 0;
-			 RCC->AHB1ENR |= tmp;
+			GPIOA_PCLK_EN();
 		} else if (pGPIOx == GPIOB) {
 			GPIOB_PCLK_EN();
 		} else if (pGPIOx == GPIOC) {
@@ -136,7 +135,7 @@ uint8_t GPIO_ReadInputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) {
 	 * - cast to uint8
 	 * - returns 0 or 1
 	 */
-	return (uint8_t) ((pGPIOx->IDR >> pinNumber) & 0x1);
+	return (uint8_t) ((pGPIOx->IDR >> pinNumber) & 0x00000001);
 }
 
 uint16_t GPIO_ReadInputPort(GPIO_RegDef_t *pGPIOx) {

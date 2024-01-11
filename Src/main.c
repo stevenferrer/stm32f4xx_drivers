@@ -5,10 +5,10 @@
  *      Author: sf
  */
 
-#include "examples/example1_blinky_ext.h"
+#include "examples/example2_led_button_ext.h"
 
 int main(void){
-	blink_ext();
+	led_button_ext();
 	return 0;
 }
 
