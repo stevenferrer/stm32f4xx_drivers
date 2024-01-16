@@ -76,6 +76,36 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
 		pGPIOHandle->pGPIOx->MODER |= temp; // set
 	} else {
 		// interrupt mode
+
+		// 1. configure FTSR/RTSR or both
+		if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_FT) {
+			// configure FTSR
+			EXTI->FTSR |= (1 << pinNumber);
+			// clear corresponding RTSR bit (why tho?)
+			EXTI->RTSR &= ~(1 << pinNumber);
+		} else if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RT) {
+			// configure RTSR
+			EXTI->RTSR |= (1 << pinNumber);
+			// clear corresponding FTSR bit (why tho?)
+			EXTI->FTSR &= ~(1 << pinNumber);
+		} else if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RFT) {
+			// configure both FTSR and RTSR
+			EXTI->FTSR |= (1 << pinNumber);
+			EXTI->RTSR |= (1 << pinNumber);
+		}
+
+		// 2. configure GPIO port selection in SYSCFG_EXTICR
+		uint8_t extiCrPos = pinNumber / 4;
+		uint8_t bitFieldOffset = (pinNumber % 4) * 4;
+
+		// use macro to convert gpio base addr to port code
+		uint8_t portCode = GPIO_BASE_ADDR_TO_PORT_CODE(pGPIOHandle->pGPIOx);
+
+		SYSCFG_PCLK_EN(); // enable clock
+		SYSCFG->EXTICR[extiCrPos] = portCode << (bitFieldOffset * 4);
+
+		// 3. enable exti interrupt delivery using IMR
+		EXTI->IMR |= (1 << pinNumber);
 	}
 
 	// 2. configure speed

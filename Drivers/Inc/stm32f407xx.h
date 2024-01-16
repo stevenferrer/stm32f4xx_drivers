@@ -75,6 +75,7 @@
  * Peripheral structure definitions
  */
 
+// See GPIO register map
 typedef struct GPIO_RegDef_t {
 	_reg MODER; // mode register
 	_reg OTYPER; // output type register
@@ -87,8 +88,9 @@ typedef struct GPIO_RegDef_t {
 	_reg AFR[2]; // alternate function register
 } GPIO_RegDef_t;
 
+// See RCC register map
 typedef struct RCC_RegDef_t {
-	_reg RC;
+	_reg CR;
 	_reg PLLCFGR;
 	_reg CFGR;
 	_reg CIR;
@@ -120,6 +122,26 @@ typedef struct RCC_RegDef_t {
 	_reg PLLI2CFGR;
 } RCC_RegDef_t;
 
+// See EXTI register map
+typedef struct EXTI_RegDef_t {
+	_reg IMR;
+	_reg EMR;
+	_reg RTSR;
+	_reg FTSR;
+	_reg SWIER;
+	_reg PR;
+} EXTI_RegDef_t;
+
+// See SYSCFG register map
+typedef struct SYSCFG_RegDef_t {
+	_reg MEMRMP;
+	_reg PMC;
+	_reg EXTICR[4]; // 0x08 to 0x14
+	// registers 0x18 and 0x1c not mentioned in datasheet
+	uint32_t __res1[2];
+	_reg CMPCR; // 0x20
+} SYSCFG_RegDef_t;
+
 /*
  * Peripheral definitions
  */
@@ -135,6 +157,10 @@ typedef struct RCC_RegDef_t {
 #define GPIOI ((GPIO_RegDef_t*)GPIOI_BASE_ADDR)
 
 #define RCC ((RCC_RegDef_t*)RCC_BASE_ADDR)
+
+#define EXTI ((EXTI_RegDef_t*)EXT1_BASE_ADDR)
+
+#define SYSCFG ((SYSCFG_RegDef_t*)SYSCFG_BASE_ADDR)
 
 /*
  * Clock enable macros for GPIOx peripherals
@@ -238,10 +264,33 @@ typedef struct RCC_RegDef_t {
 #define GPIOH_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x7)); (RCC->AHB1RSTR &= ~(1 << 0x7));} while(0)
 #define GPIOI_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x8)); (RCC->AHB1RSTR &= ~(1 << 0x8));} while(0)
 
+#define GPIO_BASE_ADDR_TO_PORT_CODE(x) ((x==GPIOA) ? 0 : \
+							(x == GPIOB) ? 1 : \
+							(x == GPIOC) ? 2 : \
+							(x == GPIOD) ? 3 : \
+							(x == GPIOE) ? 4 : \
+							(x == GPIOF) ? 5 : \
+							(x == GPIOG) ? 6 : \
+							(x == GPIOH) ? 7 : \
+							(x == GPIOI) ? 8 : 0)
+
+// IRQ (interrupt request numbers)
+#define IRQ_NO_EXTI0 6
+#define IRQ_NO_EXTI1 7
+#define IRQ_NO_EXTI2 8
+#define IRQ_NO_EXTI3 9
+#define IRQ_NO_EXTI4 10
+#define IRQ_NO_EXTI9_5 23
+#define IRQ_NO_EXTI15_10 40
+
+
+
 // Generic macros
 #define ENABLE 1
 #define DISABLE 0
 #define SET ENABLE
 #define RESET DISABLE
+
+// TODO: Define IRQ numbers
 
 #endif /* INC_STM32F407XX_H_ */
