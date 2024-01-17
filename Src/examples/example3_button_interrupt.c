@@ -5,12 +5,14 @@
  *      Author: sf
  */
 
-#include "example3_button_interrupt.h"
+#include <string.h>
 
 #include "stm32f407xx.h"
 #include "stm32f407xx_gpio_driver.h"
 
-#include <string.h>
+#include "example3_button_interrupt.h"
+
+#include "../utils.h"
 
 void button_interrupt(void) {
 	GPIO_Handle_t gpio_led, gpio_btn;
@@ -44,3 +46,11 @@ void button_interrupt(void) {
 	}
 
 }
+
+// Make sure to include GPIO_IRQHandling
+void EXTI9_5_IRQHandler(void) {
+	GPIO_IRQHandling(GPIO_PIN_NO_5);
+	delay(3);
+	GPIO_ToggleOutputPin(GPIOD, GPIO_PIN_NO_12);
+}
+

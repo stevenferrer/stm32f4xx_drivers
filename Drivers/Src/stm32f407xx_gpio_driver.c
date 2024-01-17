@@ -225,12 +225,16 @@ void GPIO_IRQInterruptConfig(uint8_t irqNumber, uint8_t enable) {
 
 void GPIO_IRQPriorityConfig(uint8_t irqNumber, uint8_t irqPriority) {
 	// 1. find out the IPR register
-	uint8_t iprx = irqNumber / 4;
-	uint8_t iprx_section = irqNumber % 4;
+	// example IRQ number is 236:
+	// * 23 / 4 = 5 -> IPR 5
+	// * 23 % 4 = 3 -> section 3rd
+	uint8_t iprxAddrOffset = (irqNumber / 4);
+	uint8_t iprxSection = irqNumber % 4;
 
-	uint8_t shiftAmount = (8 * iprx_section)
+	uint8_t shiftAmount = (8 * iprxSection)
 			+ (8 - NO_PRIORITY_BITS_IMPLEMENTED);
-	*(NVIC_IPR_BASE_ADDR + iprx) |= (irqPriority << shiftAmount);
+	_reg *nvicIprPtr = (NVIC_IPR_BASE_ADDR + iprxAddrOffset);
+	*nvicIprPtr |= (irqPriority << shiftAmount);
 }
 
 void GPIO_IRQHandling(uint8_t pinNumber) {
