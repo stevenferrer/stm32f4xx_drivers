@@ -8,6 +8,35 @@
 
 #include <stdint.h>
 
+#define _reg volatile uint32_t
+
+/*
+ * Processor specific register
+ */
+
+/*
+ * ARM cortex-m4 NVIC ISERx register addr
+ */
+#define NVIC_ISER0 ((_reg*)0xe000e100)
+#define NVIC_ISER1 ((_reg*)0xe000e104)
+#define NVIC_ISER2 ((_reg*)0xe000e108)
+#define NVIC_ISER3 ((_reg*)0xe000e10c)
+
+/*
+ * ARM cortex-m4 NVIC ICERx register addr
+ */
+#define NVIC_ICER0 ((_reg*)0xe000e180)
+#define NVIC_ICER1 ((_reg*)0xe000e184)
+#define NVIC_ICER2 ((_reg*)0xe000e188)
+#define NVIC_ICER3 ((_reg*)0xe000e18c)
+
+/*
+ * ARM cortex-m4 NVIC IPRx register addr
+ */
+#define NVIC_IPR_BASE_ADDR ((_reg*)0xe000e400)
+
+#define NO_PRIORITY_BITS_IMPLEMENTED 4
+
 /*
  * Memory base addresses
  */
@@ -68,8 +97,6 @@
 #define SYSCFG_BASE_ADDR (APB2_BASE_ADDR + 0x3800u)
 #define USART1_BASE_ADDR (APB2_BASE_ADDR + 0x1000u)
 #define USART6_BASE_ADDR (APB2_BASE_ADDR + 0x1400u)
-
-#define _reg volatile uint32_t
 
 /*
  * Peripheral structure definitions
@@ -282,8 +309,6 @@ typedef struct SYSCFG_RegDef_t {
 #define IRQ_NO_EXTI4 10
 #define IRQ_NO_EXTI9_5 23
 #define IRQ_NO_EXTI15_10 40
-
-
 
 // Generic macros
 #define ENABLE 1

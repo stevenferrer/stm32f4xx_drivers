@@ -192,8 +192,50 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber) {
 	pGPIOx->ODR ^= (1 << pinNumber);
 }
 
-void GPIO_IRQConfig(uint8_t irqNumber, uint8_t irqPriority, uint8_t enable) {
+void GPIO_IRQInterruptConfig(uint8_t irqNumber, uint8_t enable) {
+	// processor specific config for interrupts
+
+	if (enable == ENABLE) {
+		// program ISER register
+		if (irqNumber <= 31) {
+			// ISER0
+			*NVIC_ISER0 |= (1 << irqNumber);
+		} else if (irqNumber > 31 && irqNumber < 64) {
+			// ISER1
+			*NVIC_ISER1 |= (1 << (irqNumber % 32));
+		} else if (irqNumber > 64 && irqNumber < 96) {
+			// ISER2
+			*NVIC_ISER2 |= (1 << (irqNumber % 64));
+		}
+
+	} else {
+		// program ICER register
+		if (irqNumber <= 31) {
+			// ICER0
+			*NVIC_ICER0 |= (1 << irqNumber);
+		} else if (irqNumber > 31 && irqNumber < 64) {
+			// ICER1
+			*NVIC_ICER1 |= (1 << irqNumber % 32);
+		} else if (irqNumber > 64 && irqNumber < 96) {
+			// ICER2
+			*NVIC_ICER2 |= (1 << irqNumber % 64);
+		}
+	}
+}
+
+void GPIO_IRQPriorityConfig(uint8_t irqNumber, uint8_t irqPriority) {
+	// 1. find out the IPR register
+	uint8_t iprx = irqNumber / 4;
+	uint8_t iprx_section = irqNumber % 4;
+
+	uint8_t shiftAmount = (8 * iprx_section)
+			+ (8 - NO_PRIORITY_BITS_IMPLEMENTED);
+	*(NVIC_IPR_BASE_ADDR + iprx * 4) |= (irqPriority << shiftAmount);
 }
 
 void GPIO_IRQHandling(uint8_t pinNumber) {
+	// clear the exti PR register
+	if (EXTI->PR & (1 << pinNumber)) {
+		EXTI->PR |= (1 << pinNumber);
+	}
 }
