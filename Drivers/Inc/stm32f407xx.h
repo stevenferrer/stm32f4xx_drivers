@@ -35,6 +35,7 @@
  */
 #define NVIC_IPR_BASE_ADDR ((_reg*)0xe000e400)
 
+
 #define NO_PRIORITY_BITS_IMPLEMENTED 4
 
 /*
@@ -164,7 +165,7 @@ typedef struct SYSCFG_RegDef_t {
 	_reg MEMRMP;
 	_reg PMC;
 	_reg EXTICR[4]; // 0x08 to 0x14
-	// registers 0x18 and 0x1c not mentioned in datasheet
+	// registers for 0x18 and 0x1c not mentioned in datasheet
 	uint32_t __res1[2];
 	_reg CMPCR; // 0x20
 } SYSCFG_RegDef_t;
@@ -309,6 +310,9 @@ typedef struct SYSCFG_RegDef_t {
 #define IRQ_NO_EXTI4 10
 #define IRQ_NO_EXTI9_5 23
 #define IRQ_NO_EXTI15_10 40
+
+#define NVIC_IRQ_PRIORITY_0 0
+#define NVIC_IRQ_PRIORITY_15 15
 
 // Generic macros
 #define ENABLE 1

@@ -81,12 +81,12 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
 		if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_FT) {
 			// configure FTSR
 			EXTI->FTSR |= (1 << pinNumber);
-			// clear corresponding RTSR bit (why tho?)
+			// clear corresponding RTSR bit to disable
 			EXTI->RTSR &= ~(1 << pinNumber);
 		} else if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RT) {
 			// configure RTSR
 			EXTI->RTSR |= (1 << pinNumber);
-			// clear corresponding FTSR bit (why tho?)
+			// clear corresponding FTSR bit to disable
 			EXTI->FTSR &= ~(1 << pinNumber);
 		} else if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RFT) {
 			// configure both FTSR and RTSR
@@ -96,7 +96,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
 
 		// 2. configure GPIO port selection in SYSCFG_EXTICR
 		uint8_t extiCrPos = pinNumber / 4;
-		uint8_t bitFieldOffset = (pinNumber % 4) * 4;
+		uint8_t bitFieldOffset = (pinNumber % 4);
 
 		// use macro to convert gpio base addr to port code
 		uint8_t portCode = GPIO_BASE_ADDR_TO_PORT_CODE(pGPIOHandle->pGPIOx);
@@ -104,7 +104,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
 		SYSCFG_PCLK_EN(); // enable clock
 		SYSCFG->EXTICR[extiCrPos] = portCode << (bitFieldOffset * 4);
 
-		// 3. enable exti interrupt delivery using IMR
+		// 3. enable exti interrupt delivery using IMR (unmasked)
 		EXTI->IMR |= (1 << pinNumber);
 	}
 
@@ -230,7 +230,7 @@ void GPIO_IRQPriorityConfig(uint8_t irqNumber, uint8_t irqPriority) {
 
 	uint8_t shiftAmount = (8 * iprx_section)
 			+ (8 - NO_PRIORITY_BITS_IMPLEMENTED);
-	*(NVIC_IPR_BASE_ADDR + iprx * 4) |= (irqPriority << shiftAmount);
+	*(NVIC_IPR_BASE_ADDR + iprx) |= (irqPriority << shiftAmount);
 }
 
 void GPIO_IRQHandling(uint8_t pinNumber) {
