@@ -35,7 +35,6 @@
  */
 #define NVIC_IPR_BASE_ADDR ((_reg*)0xe000e400)
 
-
 #define NO_PRIORITY_BITS_IMPLEMENTED 4
 
 /*
@@ -170,6 +169,19 @@ typedef struct SYSCFG_RegDef_t {
 	_reg CMPCR; // 0x20
 } SYSCFG_RegDef_t;
 
+// See SPI register map
+typedef struct SPI_RegDef_t {
+	_reg CR1;
+	_reg CR2;
+	_reg SR;
+	_reg DR;
+	_reg CRCPR;
+	_reg RXCRCR;
+	_reg TXCRCR;
+	_reg I2SCFGR;
+	_reg I2SPR;
+} SPI_RegDef_t;
+
 /*
  * Peripheral definitions
  */
@@ -189,6 +201,9 @@ typedef struct SYSCFG_RegDef_t {
 #define EXTI ((EXTI_RegDef_t*)EXT1_BASE_ADDR)
 
 #define SYSCFG ((SYSCFG_RegDef_t*)SYSCFG_BASE_ADDR)
+
+#define SPI1 ((SPI_RegDef_t*)SPI1_BASE_ADDR);
+#define SPI2 ((SPI_RegDef_t*)SPI2_BASE_ADDR);
 
 /*
  * Clock enable macros for GPIOx peripherals
