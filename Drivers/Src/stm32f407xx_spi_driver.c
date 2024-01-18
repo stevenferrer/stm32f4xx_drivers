@@ -36,6 +36,7 @@ void SPI_PeriClockCtrl(SPI_RegDef_t *pSPIx, uint8_t enable) {
  */
 void SPI_Init(SPI_Handle_t *pSPIHandle) {
 }
+
 void SPI_DeInit(SPI_RegDef_t *pSPIx) {
 }
 

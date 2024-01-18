@@ -17,13 +17,62 @@ typedef struct SPI_Config_t {
 	uint8_t CPHA;
 	uint8_t CPOL;
 	uint8_t SSM;
-	uint8_t Speed;
+	uint8_t SCLKSpeed;
 } SPI_Config_t;
 
 typedef struct SPI_Handle_t {
 	SPI_RegDef_t *pSPIx;
 	SPI_Config_t config;
 } SPI_Handle_t;
+
+/*
+ * SPI device mode
+ */
+#define SPI_MODE_DEVICE_SLAVE 0
+#define SPI_MODE_DEVICE_MASTER 1
+
+/*
+ * Bus config
+ */
+#define SPI_BUS_CONFIG_FD 1
+#define SPI_BUS_CONFIG_HD 2
+#define SPI_BUS_CONFIG_SIMPLEX_RX_ONLY 3
+
+/*
+ * Clock speed
+ */
+#define SPI_SCLK_SPEED_DIV_2 0
+#define SPI_SCLK_SPEED_DIV_4 1
+#define SPI_SCLK_SPEED_DIV_8 2
+#define SPI_SCLK_SPEED_DIV_16 3
+#define SPI_SCLK_SPEED_DIV_32 4
+#define SPI_SCLK_SPEED_DIV_64 5
+#define SPI_SCLK_SPEED_DIV_128 6
+#define SPI_SCLK_SPEED_DIV_256 7
+
+/*
+ * Data-frame format (DFF)
+ */
+#define SPI_DFF_8 0
+#define SPI_DFF_16 1
+
+/*
+ * Clock polarity (CPOL)
+ */
+#define SPI_CPOL_LOW 0
+#define SPI_CPOL_HIGH 1
+
+/*
+ * Clock phase (CPHA)
+ */
+#define SPI_CPHA_LOW 0
+#define SPI_CPHA_HIGH 1
+
+/*
+ * Software slave management (SSM)
+ */
+#define SPI_SSM_DI 0
+#define SPI_SSM_EN 1
 
 /*
  * Peripheral clock setup
