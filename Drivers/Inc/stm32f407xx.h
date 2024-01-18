@@ -336,4 +336,17 @@ typedef struct SPI_RegDef_t {
 #define SET ENABLE
 #define RESET DISABLE
 
+/*
+ * Bit position macros
+ */
+#define SPI_CR1_CPHA 0
+#define SPI_CR1_CPOL 1
+#define SPI_CR1_MSTR 2
+#define SPI_CR1_BR 3
+#define SPI_CR1_SSM 9
+#define SPI_CR1_RXONLY 10
+#define SPI_CR1_DFF 11
+#define SPI_CR1_BIDIOE 14
+#define SPI_CR1_BIDIMODE 15
+
 #endif /* INC_STM32F407XX_H_ */
