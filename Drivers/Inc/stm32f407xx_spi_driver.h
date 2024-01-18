@@ -28,7 +28,6 @@ typedef struct SPI_Handle_t {
 /*
  * Peripheral clock setup
  */
-
 void SPI_PeriClockCtrl(SPI_RegDef_t *pSPIx, uint8_t enable);
 
 /*

@@ -202,8 +202,9 @@ typedef struct SPI_RegDef_t {
 
 #define SYSCFG ((SYSCFG_RegDef_t*)SYSCFG_BASE_ADDR)
 
-#define SPI1 ((SPI_RegDef_t*)SPI1_BASE_ADDR);
-#define SPI2 ((SPI_RegDef_t*)SPI2_BASE_ADDR);
+#define SPI1 ((SPI_RegDef_t*)SPI1_BASE_ADDR)
+#define SPI2 ((SPI_RegDef_t*)SPI2_BASE_ADDR)
+#define SPI3 ((SPI_RegDef_t*)SPI3_BASE_ADDR)
 
 /*
  * Clock enable macros for GPIOx peripherals
@@ -334,7 +335,5 @@ typedef struct SPI_RegDef_t {
 #define DISABLE 0
 #define SET ENABLE
 #define RESET DISABLE
-
-// TODO: Define IRQ numbers
 
 #endif /* INC_STM32F407XX_H_ */

@@ -5,12 +5,29 @@
  *      Author: sf
  */
 
-#include "stm32f407xx_spi_driver.h";
+#include "stm32f407xx_spi_driver.h"
 
 /*
  * Peripheral clock setup
  */
 void SPI_PeriClockCtrl(SPI_RegDef_t *pSPIx, uint8_t enable) {
+	if (enable == ENABLE) {
+		if (pSPIx == SPI1) {
+			SPI1_PCLK_EN();
+		} else if (pSPIx == SPI2) {
+			SPI2_PCLK_EN();
+		} else if (pSPIx == SPI3) {
+			SPI3_PCLK_EN();
+		}
+	} else {
+		if (pSPIx == SPI1) {
+			SPI1_PCLK_DI();
+		} else if (pSPIx == SPI2) {
+			SPI2_PCLK_DI();
+		} else if (pSPIx == SPI3) {
+			SPI3_PCLK_DI();
+		}
+	}
 
 }
 
