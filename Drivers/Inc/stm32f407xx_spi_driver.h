@@ -75,6 +75,11 @@ typedef struct SPI_Handle_t {
 #define SPI_SSM_EN 1
 
 /*
+ * SPI related status flag mask
+ */
+#define SPI_FLAG_TXE (1 << SPI_SR_TXE)
+
+/*
  * Peripheral clock setup
  */
 void SPI_PeriClockCtrl(SPI_RegDef_t *pSPIx, uint8_t enable);

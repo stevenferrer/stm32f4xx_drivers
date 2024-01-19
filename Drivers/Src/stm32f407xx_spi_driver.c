@@ -70,13 +70,42 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx) {
 	} else if (pSPIx == SPI3) {
 		SPI3_REG_RESET();
 	}
+
+	// TODO: Implement SPI disable, see reference manual for disabling the SPI
 }
 
 /*
  * Data send and receive
  */
-void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t size) {
+
+uint8_t SPI_GetStatusFlag(SPI_RegDef_t *pSPIx, uint32_t mask) {
+	if (pSPIx->SR & mask) {
+		return FLAG_SET;
+	}
+	return FLAG_RESET;
 }
+
+// Blocking/polling call
+void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len) {
+	while (len) {
+		// wait for TXE to be 1
+		while (!(SPI_GetStatusFlag(pSPIx, SPI_FLAG_TXE) == FLAG_RESET))
+			;
+		if (pSPIx->CR1 & (1 << SPI_CR1_DFF)) {
+			// 16-bit DFF
+			// typecast to uint16 to get 2 bytes of data every increment
+			pSPIx->DR = *((uint16_t*) pTxBuffer);
+			(uint16_t*) pTxBuffer++;
+			len -= 2; // 2 bytes sent
+		} else {
+			// 8-bit DFF
+			pSPIx->DR = *pTxBuffer;
+			pTxBuffer++;
+			len--; // 1 byte sent
+		}
+	}
+}
+
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t size) {
 }
 
