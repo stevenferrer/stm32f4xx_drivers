@@ -295,18 +295,22 @@ typedef struct SPI_RegDef_t {
 #define SYSCFG_PCLK_DI() (RCC->APB2ENR &= ~(1 << 0xeu))
 
 /*
- * REgister reset macros
+ * Register reset macros. Works by setting the reset register to 1 and then back to zero.
+ * Use "do while condition zero" to execute multiple statements.
  */
-// use trick to execute multiple c statements in one macro; "do while condition zero"
-#define GPIOA_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0)); (RCC->AHB1RSTR &= ~(1 << 0));} while(0)
-#define GPIOB_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x1)); (RCC->AHB1RSTR &= ~(1 << 0x1));} while(0)
-#define GPIOC_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x2)); (RCC->AHB1RSTR &= ~(1 << 0x2));} while(0)
-#define GPIOD_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x3)); (RCC->AHB1RSTR &= ~(1 << 0x3));} while(0)
-#define GPIOE_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x4)); (RCC->AHB1RSTR &= ~(1 << 0x4));} while(0)
-#define GPIOF_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x5)); (RCC->AHB1RSTR &= ~(1 << 0x5));} while(0)
-#define GPIOG_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x6)); (RCC->AHB1RSTR &= ~(1 << 0x6));} while(0)
-#define GPIOH_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x7)); (RCC->AHB1RSTR &= ~(1 << 0x7));} while(0)
-#define GPIOI_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x8)); (RCC->AHB1RSTR &= ~(1 << 0x8));} while(0)
+#define GPIOA_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0)); (RCC->AHB1RSTR &= ~(1 << 0)); } while(0)
+#define GPIOB_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x1)); (RCC->AHB1RSTR &= ~(1 << 0x1)); } while(0)
+#define GPIOC_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x2)); (RCC->AHB1RSTR &= ~(1 << 0x2)); } while(0)
+#define GPIOD_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x3)); (RCC->AHB1RSTR &= ~(1 << 0x3)); } while(0)
+#define GPIOE_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x4)); (RCC->AHB1RSTR &= ~(1 << 0x4)); } while(0)
+#define GPIOF_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x5)); (RCC->AHB1RSTR &= ~(1 << 0x5)); } while(0)
+#define GPIOG_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x6)); (RCC->AHB1RSTR &= ~(1 << 0x6)); } while(0)
+#define GPIOH_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x7)); (RCC->AHB1RSTR &= ~(1 << 0x7)); } while(0)
+#define GPIOI_REG_RESET() do { (RCC->AHB1RSTR |= (1 << 0x8)); (RCC->AHB1RSTR &= ~(1 << 0x8)); } while(0)
+
+#define SPI1_REG_RESET() do { RCC->APB2RSTR |= (1 << 0xc); (RCC->APB2RSTR &= ~(1<<0xc)); } while(0)
+#define SPI2_REG_RESET() do { RCC->APB1RSTR |= (1 << 0xe); (RCC->APB1RSTR &= ~(1<<0xe)); } while(0)
+#define SPI3_REG_RESET() do { RCC->APB1RSTR |= (1 << 0xf); (RCC->APB1RSTR &= ~(1<<0xf)); } while(0)
 
 #define GPIO_BASE_ADDR_TO_PORT_CODE(x) ((x==GPIOA) ? 0 : \
 							(x == GPIOB) ? 1 : \
