@@ -339,6 +339,7 @@ typedef struct SPI_RegDef_t {
 #define DISABLE 0
 #define SET ENABLE
 #define RESET DISABLE
+#define FLAG_SET SET
 #define FLAG_RESET RESET
 
 /*
