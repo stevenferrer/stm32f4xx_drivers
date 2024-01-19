@@ -103,4 +103,8 @@ void SPI_IRQInterruptConfig(uint8_t irqNumber, uint8_t enable);
 void SPI_IRQPriorityConfig(uint8_t irqNumber, uint8_t irqPriority);
 void SPI_IRQHandling(SPI_Handle_t *pSPIHandle);
 
+void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t enable);
+void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t enable);
+
+
 #endif /* INC_STM32F407XX_SPI_DRIVER_H_ */

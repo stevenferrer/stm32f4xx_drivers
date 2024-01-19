@@ -5,13 +5,10 @@
  *      Author: sf
  */
 
-#include "examples/example3_button_interrupt.h"
-
-#include "stm32f407xx_gpio_driver.h"
-
-#include "utils.h"
+#include "examples/example4_spi_tx.h"
+#include "examples/example1_blinky.h"
 
 int main(void) {
-	button_interrupt();
+	spi_send_data();
 	return 0;
 }

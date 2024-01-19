@@ -38,6 +38,8 @@ void SPI_Init(SPI_Handle_t *pSPIHandle) {
 	// 1. Configure SPI_CR1 register
 	uint32_t tempReg = 0;
 
+	SPI_PeriClockCtrl(pSPIHandle->pSPIx, ENABLE);
+
 	tempReg |= pSPIHandle->config.DeviceMode << SPI_CR1_MSTR; // MSTR
 
 	if (pSPIHandle->config.BusConfig == SPI_BUS_CONFIG_FD) {
@@ -87,26 +89,44 @@ uint8_t SPI_GetStatusFlag(SPI_RegDef_t *pSPIx, uint32_t mask) {
 
 // Blocking/polling call
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len) {
-	while (len) {
+	while (len > 0) {
 		// wait for TXE to be 1
-		while (!(SPI_GetStatusFlag(pSPIx, SPI_FLAG_TXE) == FLAG_RESET))
+		while (SPI_GetStatusFlag(pSPIx, SPI_FLAG_TXE) == FLAG_RESET)
 			;
 		if (pSPIx->CR1 & (1 << SPI_CR1_DFF)) {
 			// 16-bit DFF
 			// typecast to uint16 to get 2 bytes of data every increment
 			pSPIx->DR = *((uint16_t*) pTxBuffer);
+			len--; // 2 bytes sent
+			len--;
 			(uint16_t*) pTxBuffer++;
-			len -= 2; // 2 bytes sent
 		} else {
 			// 8-bit DFF
 			pSPIx->DR = *pTxBuffer;
-			pTxBuffer++;
 			len--; // 1 byte sent
+			pTxBuffer++;
 		}
 	}
 }
 
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t size) {
+}
+
+void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t enable) {
+	if (enable == ENABLE) {
+		pSPIx->CR1 |= (1 << SPI_CR1_SPE);
+	} else {
+		pSPIx->CR1 &= ~(1 << SPI_CR1_SPE);
+	}
+}
+
+// make NSS signal internal high and avoids MODF error
+void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t enable) {
+	if (enable == ENABLE) {
+		pSPIx->CR1 |= (1 << SPI_CR1_SSI);
+	} else {
+		pSPIx->CR1 &= ~(1 << SPI_CR1_SSI);
+	}
 }
 
 /*

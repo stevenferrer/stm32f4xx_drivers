@@ -82,4 +82,22 @@ void GPIO_IRQHandling(uint8_t pinNumber);
 #define GPIO_PUPD_PU 1
 #define GPIO_PUPD_PD 2
 
+// afr
+#define GPIO_AFR_0 0
+#define GPIO_AFR_1 1
+#define GPIO_AFR_2 2
+#define GPIO_AFR_3 3
+#define GPIO_AFR_4 4
+#define GPIO_AFR_5 5
+#define GPIO_AFR_6 6
+#define GPIO_AFR_7 7
+#define GPIO_AFR_8 8
+#define GPIO_AFR_9 9
+#define GPIO_AFR_10 10
+#define GPIO_AFR_11 11
+#define GPIO_AFR_12 12
+#define GPIO_AFR_13 13
+#define GPIO_AFR_14 14
+#define GPIO_AFR_15 15
+
 #endif /* INC_STM32F407XX_GPIO_DRIVER_H_ */
