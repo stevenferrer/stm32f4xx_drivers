@@ -5,8 +5,6 @@
  *      Author: sf
  */
 
-#include "example4_spi_tx.h"
-
 #include "stm32f407xx_gpio_driver.h"
 #include "stm32f407xx_spi_driver.h"
 
@@ -55,7 +53,7 @@ void SPI2_Init(void) {
 	spi2Handle.config.DeviceMode = SPI_MODE_DEVICE_MASTER;
 	spi2Handle.config.SCLKSpeed = SPI_SCLK_SPEED_DIV_2;
 	spi2Handle.config.DFF = SPI_DFF_8;
-	spi2Handle.config.CPOL = SPI_CPOL_LOW;
+	spi2Handle.config.CPOL = SPI_CPOL_HIGH;
 	spi2Handle.config.CPHA = SPI_CPHA_LOW;
 	spi2Handle.config.SSM = SPI_SSM_EN; // software-slave management enabled
 
@@ -63,7 +61,7 @@ void SPI2_Init(void) {
 }
 
 void spi_send_data(void) {
-	char userData[] = "Hello, world!";
+	char userData[] = "Hello world";
 	SPI2_GPIO_Init();
 	SPI2_Init();
 
@@ -72,6 +70,13 @@ void spi_send_data(void) {
 	SPI_PeripheralControl(SPI2, ENABLE);
 
 	SPI_SendData(SPI2, (uint8_t*) userData, strlen(userData));
+
+	//lets confirm SPI is not busy
+	while (SPI_GetStatusFlag(SPI2, SPI_BUSY_FLAG))
+		;
+
+	//Disable the SPI2 peripheral
+	SPI_PeripheralControl(SPI2, DISABLE);
 
 	while (1) {
 	}

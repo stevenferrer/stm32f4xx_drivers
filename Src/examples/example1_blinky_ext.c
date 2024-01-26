@@ -1,5 +1,5 @@
 /*
- * example2_blinky_ext.c
+ * example1_blinky_ext.c
  *
  *  Created on: Jan 11, 2024
  *      Author: sf
@@ -9,8 +9,6 @@
 #include "stm32f407xx_gpio_driver.h"
 
 #include "../utils.h"
-
-#include "example1_blinky_ext.h"
 
 void blink_ext(void) {
 	GPIO_Handle_t gpio_led;
@@ -26,10 +24,8 @@ void blink_ext(void) {
 
 	GPIO_Init(&gpio_led);
 
-
 	for (;;) {
 		GPIO_ToggleOutputPin(GPIOB, GPIO_PIN_NO_12);
 		delay(2);
 	}
-
 }

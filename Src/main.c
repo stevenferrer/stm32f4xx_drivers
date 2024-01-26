@@ -5,8 +5,7 @@
  *      Author: sf
  */
 
-#include "examples/example4_spi_tx.h"
-#include "examples/example1_blinky.h"
+#include "examples/examples.h"
 
 int main(void) {
 	spi_send_data();

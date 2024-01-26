@@ -10,8 +10,6 @@
 #include "stm32f407xx.h"
 #include "stm32f407xx_gpio_driver.h"
 
-#include "example3_button_interrupt.h"
-
 #include "../utils.h"
 
 void button_interrupt(void) {

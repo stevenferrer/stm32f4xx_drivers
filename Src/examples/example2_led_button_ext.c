@@ -5,8 +5,6 @@
  *      Author: sf
  */
 
-#include "example2_led_button_ext.h"
-
 #include "stm32f407xx.h"
 #include "stm32f407xx_gpio_driver.h"
 
