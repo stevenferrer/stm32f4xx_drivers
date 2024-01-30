@@ -8,6 +8,6 @@
 #include "examples/examples.h"
 
 int main(void) {
-	spi_send_data();
+	spi_send_data_arduino();
 	return 0;
 }
