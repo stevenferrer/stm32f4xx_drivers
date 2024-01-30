@@ -65,8 +65,8 @@ void SPI2_Init(void) {
 void GPIO_Button_Init(void) {
 	GPIO_Handle_t gpio_btn;
 
-	gpio_btn.pGPIOx = GPIOC;
-	gpio_btn.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_13;
+	gpio_btn.pGPIOx = GPIOD;
+	gpio_btn.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_5;
 	gpio_btn.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
 	gpio_btn.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
 	gpio_btn.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PUPD_PU;
@@ -75,15 +75,18 @@ void GPIO_Button_Init(void) {
 }
 
 void spi_send_data_arduino(void) {
-	char userData[] = "Hello world";
+	char userData[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam lacinia odio dui, et pellentesque neque rutrum non. Sed et nulla in felis malesuada auctor a nec diam. Quisque in interdum ligula. Vestibulum vehicula lorem felis, quis scelerisque augue.";
+
+	GPIO_Button_Init();
 	SPI2_GPIO_Init();
 	SPI2_Init();
 
 	SPI_SSOEConfig(SPI2, ENABLE);
 
 	while (1) {
-		while (!GPIO_ReadInputPin(GPIOC, GPIO_PIN_NO_13))
-			;
+		uint8_t value = GPIO_ReadInputPin(GPIOD, GPIO_PIN_NO_5);
+		if (value != 0)
+			continue;
 
 		delay(2);
 
