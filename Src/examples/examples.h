@@ -12,7 +12,8 @@ void blink(void);
 
 void blink_ext(void);
 
-void led_button_ext(void);
+void led_external_button(void);
+void led_user_button(void);
 
 void button_interrupt(void);
 

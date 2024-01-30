@@ -10,9 +10,7 @@
 
 #include "../utils.h"
 
-#define BTN_PRESSED 0
-
-void led_button_ext(void) {
+void led_external_button(void) {
 	GPIO_Handle_t gpio_led, gpio_btn;
 
 	gpio_led.pGPIOx = GPIOA;
@@ -35,11 +33,39 @@ void led_button_ext(void) {
 	GPIO_Init(&gpio_btn);
 
 	for (;;) {
-		if (GPIO_ReadInputPin(GPIOB, GPIO_PIN_NO_12) == BTN_PRESSED) {
+		if (GPIO_ReadInputPin(GPIOB, GPIO_PIN_NO_12) == 0) {
 			GPIO_ToggleOutputPin(GPIOA, GPIO_PIN_NO_7);
 			delay(2);
 		}
 
 	}
+}
 
+void led_user_button(void) {
+	GPIO_Handle_t gpio_led, gpio_btn;
+
+	gpio_led.pGPIOx = GPIOA;
+	gpio_led.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_1;
+	gpio_led.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
+	gpio_led.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
+	gpio_led.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_OD;
+	gpio_led.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PUPD_NO;
+
+	GPIO_Init(&gpio_led);
+
+	gpio_btn.pGPIOx = GPIOA;
+	gpio_btn.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_0;
+	gpio_btn.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
+	gpio_btn.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
+	gpio_btn.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PUPD_NO;
+
+	GPIO_Init(&gpio_btn);
+
+	while (1) {
+		if (GPIO_ReadInputPin(GPIOA, GPIO_PIN_NO_0) == 0) {
+			delay(2);
+			GPIO_ToggleOutputPin(GPIOA, GPIO_PIN_NO_1);
+		}
+
+	}
 }
