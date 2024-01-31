@@ -8,7 +8,6 @@
 #include "examples/examples.h"
 
 int main(void) {
-	spi_send_data_arduino();
-//	led_external_button();
+	spi_cmd_handling();
 	return 0;
 }

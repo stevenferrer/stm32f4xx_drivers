@@ -78,6 +78,7 @@ typedef struct SPI_Handle_t {
  * SPI related status flag mask
  */
 #define SPI_FLAG_TXE (1 << SPI_SR_TXE)
+#define SPI_FLAG_RXNE (1 << SPI_SR_RXNE)
 #define SPI_BUSY_FLAG (1 << SPI_SR_BSY)
 
 /*

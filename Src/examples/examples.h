@@ -21,4 +21,6 @@ void spi_send_data(void);
 
 void spi_send_data_arduino(void);
 
+void spi_cmd_handling(void);
+
 #endif /* EXAMPLES_EXAMPLES_H_ */
