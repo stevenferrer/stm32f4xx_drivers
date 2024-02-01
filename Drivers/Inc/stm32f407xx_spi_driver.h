@@ -95,6 +95,13 @@ typedef struct SPI_Handle_t {
 #define SPI_BUSY_IN_TX 2
 
 /*
+ * SPI app events
+ */
+#define SPI_EVENT_TX_CMPLT 1
+#define SPI_EVENT_RX_CMPLT 2
+#define SPI_EVENT_OVR_ERR 3
+
+/*
  * Peripheral clock setup
  */
 void SPI_PeriClockCtrl(SPI_RegDef_t *pSPIx, uint8_t enable);

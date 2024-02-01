@@ -5,7 +5,14 @@
  *      Author: sf
  */
 
+#include <stdlib.h>
+
 #include "stm32f407xx_spi_driver.h"
+
+// static functions are local the file where it was defined
+static void SPI_TXE_IT_Handle(SPI_Handle_t *pSPIHandle);
+static void SPI_RXNE_IT_Handle(SPI_Handle_t *pSPIHandle);
+static void SPI_OVR_ERR_IT_Handle(SPI_Handle_t *pSPIHandle);
 
 /*
  * Peripheral clock setup
@@ -243,6 +250,94 @@ uint8_t SPI_ReceiveDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer,
 	return state;
 }
 
-void SPI_IRQHandling(SPI_Handle_t *pSPIHandle){
+void SPI_IRQHandling(SPI_Handle_t *pSPIHandle) {
+	uint8_t statusFlag, interruptFlag;
+
+	// check for txne
+	statusFlag = pSPIHandle->pSPIx->SR & (1 << SPI_SR_TXE);
+	interruptFlag = pSPIHandle->pSPIx->CR2 & (1 << SPI_CR2_TXEIE);
+
+	// handle txe
+	if (statusFlag && interruptFlag) {
+		SPI_TXE_IT_Handle(pSPIHandle);
+	}
+
+	// check for rxne
+	statusFlag = pSPIHandle->pSPIx->SR & (1 << SPI_SR_RXNE);
+	interruptFlag = pSPIHandle->pSPIx->CR2 & (1 << SPI_CR2_RXNEIE);
+
+	// handle rxne
+	if (statusFlag && interruptFlag) {
+		SPI_RXNE_IT_Handle(pSPIHandle);
+	}
+
+	statusFlag = pSPIHandle->pSPIx->SR & (1 << SPI_SR_OVR);
+	interruptFlag = pSPIHandle->pSPIx->CR2 & (1 << SPI_CR2_ERRIE);
+
+	// handle rxne
+	if (statusFlag && interruptFlag) {
+		SPI_OVR_ERR_IT_Handle(pSPIHandle);
+	}
 }
+
+void SPI_TXE_IT_Handle(SPI_Handle_t *pSPIHandle) {
+	if (pSPIHandle->pSPIx->CR1 & (1 << SPI_CR1_DFF)) {
+		// 16-bit DFF
+		// typecast to uint16 to get 2 bytes of data every increment
+		pSPIHandle->pSPIx->DR = *((uint16_t*) pSPIHandle->pTxBuffer);
+		pSPIHandle->txLen--; // 2 bytes sent
+		pSPIHandle->txLen--; // 2 bytes sent
+		(uint16_t*) pSPIHandle->pTxBuffer++;
+	} else {
+		// 8-bit DFF
+		pSPIHandle->pSPIx->DR = *pSPIHandle->pTxBuffer;
+		pSPIHandle->txLen--;	// 1 byte sent
+		pSPIHandle->pTxBuffer++;
+	}
+
+	if (!pSPIHandle->txLen) {
+		// TX is complete, inform the application
+
+		// clear txei register
+		pSPIHandle->pSPIx->CR2 &= ~(1 << SPI_CR2_TXEIE);
+
+		// clear the global fields
+		pSPIHandle->pTxBuffer = NULL;
+		pSPIHandle->txLen = 0;
+		pSPIHandle->txState = SPI_READY;
+		// call application callback
+		SPI_AppEventCallback(pSPIHandle, SPI_EVENT_TX_CMPLT);
+	}
+}
+
+void SPI_RXNE_IT_Handle(SPI_Handle_t *pSPIHandle) {
+	if (pSPIHandle->pSPIx->CR1 & (1 << SPI_CR1_DFF)) {
+		// 16-bit DFF
+		// typecast to uint16 to get 2 bytes of data every increment
+		*((uint16_t*) pSPIHandle->pRxBuffer) = pSPIHandle->pSPIx->DR;
+		pSPIHandle->rxLen -= 2; // 2 bytes sent
+		(uint16_t*) pSPIHandle->pRxBuffer++;
+	} else {
+		// 8-bit DFF
+		*pSPIHandle->pRxBuffer = pSPIHandle->pSPIx->DR;
+		pSPIHandle->rxLen--; // 1 byte sent
+		pSPIHandle->pRxBuffer++;
+	}
+
+	if (!pSPIHandle->rxLen) {
+		// RX is complete, inform the application
+
+		// clear RXNEIE register
+		pSPIHandle->pSPIx->CR2 &= ~(1 << SPI_CR2_RXNEIE);
+
+		// clear the global fields
+		pSPIHandle->pRxBuffer = NULL;
+		pSPIHandle->rxLen = 0;
+		pSPIHandle->rxState = SPI_READY;
+		// call application callback
+		SPI_AppEventCallback(pSPIHandle, SPI_EVENT_RX_CMPLT);
+	}
+}
+void SPI_OVR_ERR_IT_Handle(SPI_Handle_t *pSPIHandle) {
+
 }
