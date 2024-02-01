@@ -296,16 +296,8 @@ void SPI_TXE_IT_Handle(SPI_Handle_t *pSPIHandle) {
 	}
 
 	if (!pSPIHandle->txLen) {
-		// TX is complete, inform the application
-
-		// clear txei register
-		pSPIHandle->pSPIx->CR2 &= ~(1 << SPI_CR2_TXEIE);
-
-		// clear the global fields
-		pSPIHandle->pTxBuffer = NULL;
-		pSPIHandle->txLen = 0;
-		pSPIHandle->txState = SPI_READY;
-		// call application callback
+		// TX is complete, close SPI tx and call app callback
+		SPI_CloseTx(pSPIHandle);
 		SPI_AppEventCallback(pSPIHandle, SPI_EVENT_TX_CMPLT);
 	}
 }
@@ -325,19 +317,49 @@ void SPI_RXNE_IT_Handle(SPI_Handle_t *pSPIHandle) {
 	}
 
 	if (!pSPIHandle->rxLen) {
-		// RX is complete, inform the application
-
-		// clear RXNEIE register
-		pSPIHandle->pSPIx->CR2 &= ~(1 << SPI_CR2_RXNEIE);
-
-		// clear the global fields
-		pSPIHandle->pRxBuffer = NULL;
-		pSPIHandle->rxLen = 0;
-		pSPIHandle->rxState = SPI_READY;
-		// call application callback
+		// RX is complete, call app callback
+		SPI_CloseRx(pSPIHandle);
 		SPI_AppEventCallback(pSPIHandle, SPI_EVENT_RX_CMPLT);
 	}
 }
 void SPI_OVR_ERR_IT_Handle(SPI_Handle_t *pSPIHandle) {
+	// clear ovr flag
+	if (pSPIHandle->txState != SPI_BUSY_IN_TX) {
+		SPI_ClearOVRFlag(pSPIHandle->pSPIx);
+	}
 
+	// call app callback
+	SPI_AppEventCallback(pSPIHandle, SPI_EVENT_RX_CMPLT);
+}
+
+void SPI_ClearOVRFlag(SPI_RegDef_t *pSPIx) {
+	// read DR and SR to clear the OVR flag
+	uint8_t temp = pSPIx->DR;
+	temp = pSPIx->SR;
+	(void) temp; // suppress compiler warning
+}
+
+void SPI_CloseTx(SPI_Handle_t *pSPIHandle) {
+	// clear txei register
+	pSPIHandle->pSPIx->CR2 &= ~(1 << SPI_CR2_TXEIE);
+
+	// clear the global fields
+	pSPIHandle->pTxBuffer = NULL;
+	pSPIHandle->txLen = 0;
+	pSPIHandle->txState = SPI_READY;
+
+}
+
+void SPI_CloseRx(SPI_Handle_t *pSPIHandle) {
+	// clear RXNEIE register
+	pSPIHandle->pSPIx->CR2 &= ~(1 << SPI_CR2_RXNEIE);
+
+	// clear the global fields
+	pSPIHandle->pRxBuffer = NULL;
+	pSPIHandle->rxLen = 0;
+	pSPIHandle->rxState = SPI_READY;
+}
+
+_weak void SPI_AppEventCallback(SPI_Handle_t *pSPIHandle, uint8_t event) {
+	// weak implementation
 }

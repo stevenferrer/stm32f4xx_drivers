@@ -138,4 +138,10 @@ void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t enable);
 void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t enable);
 uint8_t SPI_GetStatusFlag(SPI_RegDef_t *pSPIx, uint32_t mask);
 
+void SPI_ClearOVRFlag(SPI_RegDef_t *pSPIx);
+void SPI_CloseTx(SPI_Handle_t *pSPIHandle);
+void SPI_CloseRx(SPI_Handle_t *pSPIHandle);
+
+void SPI_AppEventCallback(SPI_Handle_t *pSPIHandle, uint8_t event);
+
 #endif /* INC_STM32F407XX_SPI_DRIVER_H_ */

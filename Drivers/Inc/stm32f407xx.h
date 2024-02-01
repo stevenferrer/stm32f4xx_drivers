@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #define _reg volatile uint32_t
+#define _weak __attribute__((weak))
 
 /*
  * Processor specific register
