@@ -210,7 +210,7 @@ uint8_t SPI_SendDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer,
 		uint32_t size) {
 	uint8_t state = pSPIHandle->txState;
 
-	if (state == SPI_BUSY_IN_RX)
+	if (state == SPI_BUSY_IN_TX)
 		return state;
 
 	// 1. save tx buffer addr and len in SPI handle
@@ -228,4 +228,20 @@ uint8_t SPI_SendDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer,
 
 uint8_t SPI_ReceiveDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer,
 		uint32_t size) {
+	uint8_t state = pSPIHandle->rxState;
+
+	if (state == SPI_BUSY_IN_RX)
+		return state;
+
+	// 1. save rx buffer addr and len in SPI handle
+	pSPIHandle->pRxBuffer = pRxBuffer;
+	pSPIHandle->rxLen = size;
+
+	// 2. mark SPI state as busy in rx
+	pSPIHandle->rxState = SPI_BUSY_IN_RX;
+
+	// 3. enable RXEIE control bit to get interrupt
+	pSPIHandle->pSPIx->CR2 |= (1 << SPI_CR2_RXNEIE);
+
+	return state;
 }
