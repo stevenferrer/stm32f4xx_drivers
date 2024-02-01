@@ -205,3 +205,27 @@ void SPI_IRQPriorityConfig(uint8_t irqNumber, uint8_t irqPriority) {
 
 void SPI_IRQHandling(SPI_Handle_t *pSPIHandle) {
 }
+
+uint8_t SPI_SendDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer,
+		uint32_t size) {
+	uint8_t state = pSPIHandle->txState;
+
+	if (state == SPI_BUSY_IN_RX)
+		return state;
+
+	// 1. save tx buffer addr and len in SPI handle
+	pSPIHandle->pTxBuffer = pTxBuffer;
+	pSPIHandle->txLen = size;
+
+	// 2. mark SPI state as busy in tx
+	pSPIHandle->txState = SPI_BUSY_IN_TX;
+
+	// 3. enable TXEIE control bit to get interrupt
+	pSPIHandle->pSPIx->CR2 |= (1 << SPI_CR2_TXEIE);
+
+	return state;
+}
+
+uint8_t SPI_ReceiveDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer,
+		uint32_t size) {
+}

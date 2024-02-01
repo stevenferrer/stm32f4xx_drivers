@@ -23,6 +23,12 @@ typedef struct SPI_Config_t {
 typedef struct SPI_Handle_t {
 	SPI_RegDef_t *pSPIx;
 	SPI_Config_t config;
+	uint8_t *pTxBuffer;
+	uint8_t *pRxBuffer;
+	uint32_t txLen;
+	uint32_t rxLen;
+	uint8_t txState;
+	uint8_t rxState;
 } SPI_Handle_t;
 
 /*
@@ -82,6 +88,13 @@ typedef struct SPI_Handle_t {
 #define SPI_BUSY_FLAG (1 << SPI_SR_BSY)
 
 /*
+ * SPI drivery states
+ */
+#define SPI_READY 0
+#define SPI_BUSY_IN_RX 1
+#define SPI_BUSY_IN_TX 2
+
+/*
  * Peripheral clock setup
  */
 void SPI_PeriClockCtrl(SPI_RegDef_t *pSPIx, uint8_t enable);
@@ -97,6 +110,13 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx);
  */
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t size);
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t size);
+
+/*
+ * Data send and receive via interrupt
+ */
+void SPI_SendDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer, uint32_t size);
+void SPI_ReceiveDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer,
+		uint32_t size);
 
 /*
  * IRQ config and ISR handling
