@@ -203,9 +203,6 @@ void SPI_IRQPriorityConfig(uint8_t irqNumber, uint8_t irqPriority) {
 	*nvicIprPtr |= (irqPriority << shiftAmount);
 }
 
-void SPI_IRQHandling(SPI_Handle_t *pSPIHandle) {
-}
-
 uint8_t SPI_SendDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer,
 		uint32_t size) {
 	uint8_t state = pSPIHandle->txState;
@@ -244,4 +241,8 @@ uint8_t SPI_ReceiveDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer,
 	pSPIHandle->pSPIx->CR2 |= (1 << SPI_CR2_RXNEIE);
 
 	return state;
+}
+
+void SPI_IRQHandling(SPI_Handle_t *pSPIHandle){
+}
 }
