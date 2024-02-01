@@ -330,6 +330,9 @@ typedef struct SPI_RegDef_t {
 #define IRQ_NO_EXTI4 10
 #define IRQ_NO_EXTI9_5 23
 #define IRQ_NO_EXTI15_10 40
+#define IRQ_NO_SPI1 35
+#define IRQ_NO_SPI2 36
+#define IRQ_NO_SPI3 51
 
 #define NVIC_IRQ_PRIORITY_0 0
 #define NVIC_IRQ_PRIORITY_15 15

@@ -159,8 +159,49 @@ void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t enable) {
  * IRQ config and ISR handling
  */
 void SPI_IRQInterruptConfig(uint8_t irqNumber, uint8_t enable) {
+	// copied from GPIO driver
+
+	if (enable == ENABLE) {
+		// program ISER register
+		if (irqNumber <= 31) {
+			// ISER0
+			*NVIC_ISER0 |= (1 << irqNumber);
+		} else if (irqNumber > 31 && irqNumber < 64) {
+			// ISER1
+			*NVIC_ISER1 |= (1 << (irqNumber % 32));
+		} else if (irqNumber > 64 && irqNumber < 96) {
+			// ISER2
+			*NVIC_ISER2 |= (1 << (irqNumber % 64));
+		}
+
+	} else {
+		// program ICER register
+		if (irqNumber <= 31) {
+			// ICER0
+			*NVIC_ICER0 |= (1 << irqNumber);
+		} else if (irqNumber > 31 && irqNumber < 64) {
+			// ICER1
+			*NVIC_ICER1 |= (1 << irqNumber % 32);
+		} else if (irqNumber > 64 && irqNumber < 96) {
+			// ICER2
+			*NVIC_ICER2 |= (1 << irqNumber % 64);
+		}
+	}
 }
+
 void SPI_IRQPriorityConfig(uint8_t irqNumber, uint8_t irqPriority) {
+	// 1. find out the IPR register
+	// example IRQ number is 236:
+	// * 23 / 4 = 5 -> IPR 5
+	// * 23 % 4 = 3 -> section 3rd
+	uint8_t iprxAddrOffset = (irqNumber / 4);
+	uint8_t iprxSection = irqNumber % 4;
+
+	uint8_t shiftAmount = (8 * iprxSection)
+			+ (8 - NO_PRIORITY_BITS_IMPLEMENTED);
+	_reg *nvicIprPtr = (NVIC_IPR_BASE_ADDR + iprxAddrOffset);
+	*nvicIprPtr |= (irqPriority << shiftAmount);
 }
+
 void SPI_IRQHandling(SPI_Handle_t *pSPIHandle) {
 }
