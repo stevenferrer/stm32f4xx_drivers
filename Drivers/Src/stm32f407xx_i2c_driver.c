@@ -8,6 +8,9 @@
 #include "stm32f407xx.h"
 #include "stm32f407xx_i2c_driver.h"
 
+uint16_t AHB_PreScaler[8] = { 2, 4, 8, 16, 64, 128, 256, 512 };
+uint16_t APB_PreScaler[4] = { 2, 4, 8, 16 };
+
 /*
  * Peripheral clock setup
  */
@@ -31,16 +34,101 @@ void I2C_PeriClockCtrl(I2C_RegDef_t *pI2Cx, uint8_t enable) {
 	}
 }
 
+uint32_t RCC_GetPLLOutputClock(void) {
+	// TODO: Implement
+}
+
+uint32_t RCC_GetPclk1Value(void) {
+	// See reference manual for RCC->CFGR->SWS
+	uint8_t clkSrc = (RCC->CFGR >> 2) & 0x3;
+
+	uint32_t sysClk;
+	if (clkSrc == 0) {
+		// hsi
+		sysClk = 16000000;
+	} else if (clkSrc == 1) {
+		// hse
+		sysClk = 8000000;
+	} else if (clkSrc == 2) { // pll
+		sysClk = RCC_GetPLLOutputClock();
+	}
+
+	uint8_t ahbpReg = (RCC->CFGR >> 4) & 0xf;
+
+	uint8_t ahbp = 1;
+	if (ahbp < 8) {
+		ahbp = 1;
+	} else {
+		ahbp = AHB_PreScaler[ahbpReg - 8];
+	}
+
+	uint8_t apb1pReg = (RCC->CFGR >> 10) & 0x7;
+
+	uint8_t apb1p = 1;
+	if (apb1pReg < 4) {
+		apb1p = 1;
+	} else {
+		apb1p = APB_PreScaler[apb1pReg - 4];
+	}
+
+	uint32_t pclk1 = (sysClk / ahbp) / apb1p;
+
+	return pclk1;
+}
+
 /*
  * Init and de-init
  */
 void I2C_Init(I2C_Handle_t *pI2CHandle) {
-	// Note: Must be done while peripheral is disabled in the control register
+	// Note: Configurations must be done while peripheral is disabled in the control register
 	// 1. Configure mode (std or fast)
 	// 2. Configure speed of serial clock
 	// 3. Configure the device adddress (when device is slave)
 	// 4. Enable ack
 	// 5. Configure the rise time for I2C pins
+
+	// configure ack control bit of CR1
+	uint32_t tempReg;
+	tempReg |= pI2CHandle->config->ACKControl << I2C_CR1_ACK;
+	pI2CHandle->i2cx->CR1 |= tempReg;
+
+	// configure freq field of CR2
+	// divide by 1MHz to get smaller value e.g. 16
+	tempReg = RCC_GetPclk1Value() / 1000000u;
+	pI2CHandle->i2cx->CR2 |= (tempReg & 0x3f);
+
+	// TODO: Add support for 10-bit slave addressing (I2C_OAR1->ADD_MODE)
+	// program device own address
+	tempReg = pI2CHandle->config.DeviceAddress << 1;
+	// as per reference manual, bit 14 of I2C->OAR1
+	// should be kept at 1 by software \_('_')_/
+	tempReg |= (1 << 14);
+	pI2CHandle->i2cx->OAR1 |= tempReg;
+
+	// configure CCR, see reference manual for formulas
+	uint16_t ccrValue = 0;
+	if (pI2CHandle->config.SCLSpeed <= I2C_SCL_SPEED_STD) {
+		// standard mode
+		ccrValue = RCC_GetPclk1Value() / (2 * pI2CHandle->config.SCLSpeed);
+		tempReg = ccrValue & 0xfff;
+	} else {
+		// fast mode
+		tempReg = (1 << 15); // enable fast mode
+		tempReg |= (pI2CHandle->config.FMDutyCycle << 14);
+
+		if (pI2CHandle->config.FMDutyCycle == I2C_FM_DUTY_2) {
+			ccrValue = RCC_GetPclk1Value() / (3 * pI2CHandle->config.SCLSpeed);
+		} else {
+			ccrValue = RCC_GetPclk1Value() / (25 * pI2CHandle->config.SCLSpeed);
+		}
+
+		tempReg = ccrValue & 0xfff;
+	}
+
+	pI2CHandle->i2cx->CCR |= tempReg;
+
+	// configure trise
+
 }
 
 void I2C_DeInit(I2C_RegDef_t *pI2Cx) {
