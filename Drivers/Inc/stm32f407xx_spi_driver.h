@@ -85,7 +85,7 @@ typedef struct SPI_Handle_t {
  */
 #define SPI_FLAG_TXE (1 << SPI_SR_TXE)
 #define SPI_FLAG_RXNE (1 << SPI_SR_RXNE)
-#define SPI_BUSY_FLAG (1 << SPI_SR_BSY)
+#define SPI_FLAG_BUSY (1 << SPI_SR_BSY)
 
 /*
  * SPI drivery states
@@ -136,7 +136,7 @@ void SPI_IRQHandling(SPI_Handle_t *pSPIHandle);
 void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t enable);
 void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t enable);
 void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t enable);
-uint8_t SPI_GetStatusFlag(SPI_RegDef_t *pSPIx, uint32_t mask);
+uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t mask);
 
 void SPI_ClearOVRFlag(SPI_RegDef_t *pSPIx);
 void SPI_CloseTx(SPI_Handle_t *pSPIHandle);

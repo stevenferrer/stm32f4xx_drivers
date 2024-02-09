@@ -146,7 +146,7 @@ void spi_cmd_handling(void) {
 		// end: command send
 
 		//lets confirm SPI is not busy
-		while (SPI_GetStatusFlag(SPI2, SPI_BUSY_FLAG))
+		while (SPI_GetFlagStatus(SPI2, SPI_FLAG_BUSY))
 			;
 
 		//Disable the SPI2 peripheral

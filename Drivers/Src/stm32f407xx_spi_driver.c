@@ -87,7 +87,7 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx) {
  * Data send and receive
  */
 
-uint8_t SPI_GetStatusFlag(SPI_RegDef_t *pSPIx, uint32_t mask) {
+uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t mask) {
 	if (pSPIx->SR & mask) {
 		return FLAG_SET;
 	}
@@ -98,7 +98,7 @@ uint8_t SPI_GetStatusFlag(SPI_RegDef_t *pSPIx, uint32_t mask) {
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len) {
 	while (len > 0) {
 		// wait for TXE to be 1
-		while (SPI_GetStatusFlag(pSPIx, SPI_FLAG_TXE) == FLAG_RESET)
+		while (SPI_GetFlagStatus(pSPIx, SPI_FLAG_TXE) == FLAG_RESET)
 			;
 		if (pSPIx->CR1 & (1 << SPI_CR1_DFF)) {
 			// 16-bit DFF
@@ -119,7 +119,7 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t len) {
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t len) {
 	while (len > 0) {
 		// wait for TXE to be 1
-		while (SPI_GetStatusFlag(pSPIx, SPI_FLAG_RXNE) == FLAG_RESET)
+		while (SPI_GetFlagStatus(pSPIx, SPI_FLAG_RXNE) == FLAG_RESET)
 			;
 		if (pSPIx->CR1 & (1 << SPI_CR1_DFF)) {
 			// 16-bit DFF
