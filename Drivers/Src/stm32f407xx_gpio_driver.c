@@ -112,12 +112,12 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle) {
 
 	// 2. configure speed
 	temp = pGPIOHandle->GPIO_PinConfig.GPIO_PinSpeed << (2 * pinNumber);
-	pGPIOHandle->pGPIOx->OSPEEDR &= ~(0x3 << pinNumber);  // clear register
+	pGPIOHandle->pGPIOx->OSPEEDR &= ~(0x3 << (2 * pinNumber)); // clear register
 	pGPIOHandle->pGPIOx->OSPEEDR |= temp;
 
 	// 3. configure pull-up/pull-down register
 	temp = pGPIOHandle->GPIO_PinConfig.GPIO_PinPuPdControl << (2 * pinNumber);
-	pGPIOHandle->pGPIOx->PUPDR &= ~(0x3 << pinNumber);  // clear register
+	pGPIOHandle->pGPIOx->PUPDR &= ~(0x3 << (2 * pinNumber));  // clear register
 	pGPIOHandle->pGPIOx->PUPDR |= temp;
 
 	// 4. configure op-type

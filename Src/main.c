@@ -8,6 +8,6 @@
 #include "examples/examples.h"
 
 int main(void) {
-	spi_cmd_handling();
+	i2c_master_tx();
 	return 0;
 }

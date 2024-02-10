@@ -92,9 +92,12 @@ void I2C_Init(I2C_Handle_t *pI2CHandle) {
 	// 4. Enable ack
 	// 5. Configure the rise time for I2C pins
 
+	// enable peripheral clock
+	I2C_PeriClockCtrl(pI2CHandle->i2cx, ENABLE);
+
 	// configure ack control bit of CR1
 	uint32_t tempReg;
-	tempReg |= pI2CHandle->config.ACKControl << I2C_CR1_ACK;
+	tempReg = pI2CHandle->config.ACKControl << I2C_CR1_ACK;
 	pI2CHandle->i2cx->CR1 |= tempReg;
 
 	// configure freq field of CR2
@@ -138,7 +141,7 @@ void I2C_Init(I2C_Handle_t *pI2CHandle) {
 		tempReg = (RCC_GetPclk1Value() / 1000000U) + 1;
 	} else {
 		// fast mode
-		tempReg = (RCC_GetPclk1Value() / 1000000000U) + 1;
+		tempReg = (RCC_GetPclk1Value() * 300 / 1000000000U) + 1;
 	}
 
 	pI2CHandle->i2cx->TRISE |= tempReg & 0x3f;
@@ -173,8 +176,9 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer,
 	// 6. Send the data until len becomes 0.
 	while (len > 0) {
 		// wait till txe is set
-		while (!I2C_GetFlagStatus(pI2CHandle->i2cx, I2C_FLAG_TXE))
-			;
+		if (!I2C_GetFlagStatus(pI2CHandle->i2cx, I2C_FLAG_TXE))
+			continue;
+
 		pI2CHandle->i2cx->DR = *pTxBuffer;
 		pTxBuffer++;
 		len--;
@@ -207,14 +211,14 @@ static void I2C_ExecAddrPhase(I2C_RegDef_t *pI2Cx, uint8_t slaveAddr) {
 	// make space for r/w bit
 	slaveAddr = slaveAddr << 1;
 	// clear first bit
-	slaveAddr &= !(1);
+	slaveAddr &= ~(1);
 	// set slave addr to DR
 	pI2Cx->DR = slaveAddr;
 }
 
 static void I2C_ClearAddrFlag(I2C_RegDef_t *pI2Cx) {
 	uint32_t dummyRead = pI2Cx->SR1;
-	dummyRead = pI2Cx->SR1;
+	dummyRead = pI2Cx->SR2;
 	(void) dummyRead;
 }
 
