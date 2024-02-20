@@ -6,6 +6,7 @@
  */
 
 #include <string.h>
+#include <stdio.h>
 
 #include "stm32f407xx_gpio_driver.h"
 #include "stm32f407xx_i2c_driver.h"
@@ -81,6 +82,7 @@ int i2c_master_tx(void) {
 			// send data
 			I2C_MasterSendData(&i2c1Handle, testData, strlen((char*) testData),
 					SLAVE_ADDR);
+			printf("Hello, OpenOCD!\n");
 		}
 
 	}
