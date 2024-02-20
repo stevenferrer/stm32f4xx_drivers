@@ -24,5 +24,6 @@ void spi_send_data_arduino(void);
 void spi_cmd_handling(void);
 
 void i2c_master_tx(void);
+void i2c_master_rx(void);
 
 #endif /* EXAMPLES_EXAMPLES_H_ */

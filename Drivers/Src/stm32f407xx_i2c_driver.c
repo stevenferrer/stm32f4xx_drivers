@@ -99,8 +99,6 @@ void I2C_Init(I2C_Handle_t *pI2CHandle) {
 
 	// configure ack control bit of CR1
 	uint32_t tempReg;
-	tempReg = pI2CHandle->config.ACKControl << I2C_CR1_ACK;
-	pI2CHandle->i2cx->CR1 |= tempReg;
 
 	// configure freq field of CR2
 	// divide by 1MHz to get smaller value e.g. 16
@@ -258,9 +256,6 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer,
 		// disable acking
 		I2C_EnableAcking(pI2CHandle->i2cx, I2C_ACK_DISABLE);
 
-		// generate STOP condition
-		I2C_GenerateStopCondition(pI2CHandle->i2cx);
-
 		// clear ADDR flag
 		I2C_ClearAddrFlag(pI2CHandle->i2cx);
 
@@ -268,34 +263,36 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer,
 		while (!I2C_GetFlagStatus(pI2CHandle->i2cx, I2C_FLAG_RXNE))
 			;
 
+		// generate STOP condition
+		I2C_GenerateStopCondition(pI2CHandle->i2cx);
+
 		// read data into buffer
 		*pRxBuffer = pI2CHandle->i2cx->DR;
-		return;
-	}
+	} else {
+		// read multiple bytes from slave
 
-	// read multiple bytes from slave
+		// clear addr flag
+		I2C_ClearAddrFlag(pI2CHandle->i2cx);
 
-	// clear addr flag
-	I2C_ClearAddrFlag(pI2CHandle->i2cx);
+		// read data until len becomes zero
+		for (uint32_t i = len; i > 0; --i) {
+			// wait until RXNE becomes 1
+			while (!I2C_GetFlagStatus(pI2CHandle->i2cx, I2C_FLAG_RXNE))
+				;
 
-	// read data until len becomes zero
-	for (uint32_t i = len; i > 0; --i) {
-		// wait until RXNE becomes 1
-		while (!I2C_GetFlagStatus(pI2CHandle->i2cx, I2C_FLAG_RXNE))
-			;
+			// read last 2 bytes
+			if (i == 2) {
+				// disable acking
+				I2C_EnableAcking(pI2CHandle->i2cx, I2C_ACK_DISABLE);
 
-		// read last 2 bytes
-		if (i == 2) {
-			// disable acking
-			I2C_EnableAcking(pI2CHandle->i2cx, I2C_ACK_DISABLE);
+				// generate STOP condition
+				I2C_GenerateStopCondition(pI2CHandle->i2cx);
+			}
 
-			// generate STOP condition
-			I2C_GenerateStopCondition(pI2CHandle->i2cx);
+			// read data into buffer
+			*pRxBuffer = pI2CHandle->i2cx->DR;
+			pRxBuffer++;
 		}
-
-		// read data into buffer
-		*pRxBuffer = pI2CHandle->i2cx->DR;
-		pRxBuffer++;
 	}
 
 	// re-enable acking
