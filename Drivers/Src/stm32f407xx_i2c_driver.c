@@ -153,7 +153,7 @@ void I2C_DeInit(I2C_RegDef_t *pI2Cx) {
 }
 
 void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer,
-		uint32_t len, uint8_t slaveAddr) {
+		uint32_t len, uint8_t slaveAddr, uint8_t sr) {
 	// 1. Generate start condition
 	I2C_GenerateStartCondition(pI2CHandle->i2cx);
 
@@ -194,7 +194,9 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer,
 
 	// 8. Generate STOP condition and master need not to wait for the completion of stop condition.
 	// Note: Generating STOP automatically clears the BTF.
-	I2C_GenerateStopCondition(pI2CHandle->i2cx);
+	if (sr != I2C_SR_ENABLE) {
+		I2C_GenerateStopCondition(pI2CHandle->i2cx);
+	}
 }
 
 static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx) {
@@ -231,7 +233,7 @@ static void I2C_ClearAddrFlag(I2C_RegDef_t *pI2Cx) {
 }
 
 void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer,
-		uint32_t len, uint8_t slaveAddr) {
+		uint32_t len, uint8_t slaveAddr, uint8_t sr) {
 	// 1. Generate teh start condition
 	// 2. Confirm that start generation is complete by checking the SB flag in the SR1
 	// Note: Until SB is cleared SCL will be stretched (pulled to low)
@@ -264,7 +266,9 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer,
 			;
 
 		// generate STOP condition
-		I2C_GenerateStopCondition(pI2CHandle->i2cx);
+		if (sr != I2C_SR_ENABLE) {
+			I2C_GenerateStopCondition(pI2CHandle->i2cx);
+		}
 
 		// read data into buffer
 		*pRxBuffer = pI2CHandle->i2cx->DR;
@@ -286,7 +290,9 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer,
 				I2C_EnableAcking(pI2CHandle->i2cx, I2C_ACK_DISABLE);
 
 				// generate STOP condition
-				I2C_GenerateStopCondition(pI2CHandle->i2cx);
+				if (sr != I2C_SR_ENABLE) {
+					I2C_GenerateStopCondition(pI2CHandle->i2cx);
+				}
 			}
 
 			// read data into buffer

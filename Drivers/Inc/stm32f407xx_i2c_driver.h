@@ -64,6 +64,12 @@ typedef struct I2C_Handle_t {
 #define I2C_RW_READ 1
 
 /*
+ * Repeated start macros
+ */
+#define I2C_SR_DISABLE 0
+#define I2C_SR_ENABLE 1
+
+/*
  * Peripheral clock setup
  */
 void I2C_PeriClockCtrl(I2C_RegDef_t *pI2Cx, uint8_t enable);
@@ -74,9 +80,10 @@ void I2C_PeriClockCtrl(I2C_RegDef_t *pI2Cx, uint8_t enable);
 void I2C_Init(I2C_Handle_t *pI2CHandle);
 void I2C_DeInit(I2C_RegDef_t *pI2Cx);
 
-
-void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t* pTxBuffer, uint32_t len, uint8_t slaveAddress);
-void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t* pRxBuffer, uint32_t len, uint8_t slaveAddress);
+void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer,
+		uint32_t len, uint8_t slaveAddress, uint8_t sr);
+void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer,
+		uint32_t len, uint8_t slaveAddress, uint8_t sr);
 
 /*
  * IRQ config and ISR handling
@@ -88,6 +95,6 @@ void I2C_AppEventCallback(I2C_Handle_t *pI2Candle, uint8_t event);
 
 void I2C_PeripheralControl(I2C_RegDef_t *pI2Cx, uint8_t enable);
 uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pI2Cx, uint32_t mask);
-void I2C_EnableAcking(I2C_RegDef_t* pI2Cx, uint8_t enable);
+void I2C_EnableAcking(I2C_RegDef_t *pI2Cx, uint8_t enable);
 
 #endif /* INC_STM32F407XX_I2C_DRIVER_H_ */

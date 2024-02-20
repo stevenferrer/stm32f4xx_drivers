@@ -87,17 +87,20 @@ int i2c_master_rx(void) {
 			delay(2);
 
 			commandCode = 0x51;
-			I2C_MasterSendData(&i2c1Handle, &commandCode, 1, SLAVE_ADDR);
+			I2C_MasterSendData(&i2c1Handle, &commandCode, 1, SLAVE_ADDR,
+					I2C_SR_ENABLE);
 
-			I2C_MasterReceiveData(&i2c1Handle, &len, 1, SLAVE_ADDR);
+			I2C_MasterReceiveData(&i2c1Handle, &len, 1, SLAVE_ADDR, I2C_SR_ENABLE);
 
 			commandCode = 0x52;
-			I2C_MasterSendData(&i2c1Handle, &commandCode, 1, SLAVE_ADDR);
+			I2C_MasterSendData(&i2c1Handle, &commandCode, 1, SLAVE_ADDR,
+					I2C_SR_ENABLE);
 
-			I2C_MasterReceiveData(&i2c1Handle, receiveBuffer, len, SLAVE_ADDR);
+			I2C_MasterReceiveData(&i2c1Handle, receiveBuffer, len, SLAVE_ADDR,
+					I2C_SR_DISABLE);
 
 			// Note: Remove when not in debug mode
-			printf("Received from arduino: %s\n", receiveBuffer);
+//			printf("Received from arduino: %s\n", receiveBuffer);
 		}
 	}
 }
