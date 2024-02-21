@@ -20,6 +20,14 @@ typedef struct I2C_Config_t {
 typedef struct I2C_Handle_t {
 	I2C_RegDef_t *i2cx;
 	I2C_Config_t config;
+	uint8_t *pTxBuffer;
+	uint8_t *pRxBuffer; // rx buffer
+	uint32_t txLen; // tx len
+	uint32_t rxLen; // rx len
+	uint8_t commState;  // communication state
+	uint8_t devAddr; // slave/device address
+	uint32_t rxSize; // rx size
+	uint8_t sr; // repeated start
 } I2C_Handle_t;
 
 /*
@@ -68,6 +76,13 @@ typedef struct I2C_Handle_t {
  */
 #define I2C_SR_DISABLE 0
 #define I2C_SR_ENABLE 1
+
+/*
+ *  I2C communication state
+ */
+#define I2C_STATE_READY 0
+#define I2C_STATE_BUSY_IN_RX 1
+#define I2C_STATE_BUSY_IN_TX 2
 
 /*
  * Peripheral clock setup
