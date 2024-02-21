@@ -100,6 +100,11 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer,
 void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer,
 		uint32_t len, uint8_t slaveAddress, uint8_t sr);
 
+uint8_t I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer,
+		uint32_t len, uint8_t slaveAddress, uint8_t sr);
+uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer,
+		uint32_t len, uint8_t slaveAddress, uint8_t sr);
+
 /*
  * IRQ config and ISR handling
  */
