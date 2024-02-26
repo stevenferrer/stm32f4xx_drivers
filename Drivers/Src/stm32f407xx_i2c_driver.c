@@ -380,12 +380,58 @@ void I2C_EnableAcking(I2C_RegDef_t *pI2Cx, uint8_t enable) {
 
 uint8_t I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pTxBuffer,
 		uint32_t len, uint8_t slaveAddress, uint8_t sr) {
-	return 0;
+	uint8_t busyState = pI2CHandle->state;
+
+	if ((busyState != I2C_STATE_BUSY_IN_TX)
+			&& (busyState != I2C_STATE_BUSY_IN_RX)) {
+		pI2CHandle->pTxBuffer = pTxBuffer;
+		pI2CHandle->txLen = len;
+		pI2CHandle->state = I2C_STATE_BUSY_IN_TX;
+		pI2CHandle->devAddr = slaveAddress;
+		pI2CHandle->sr = sr;
+
+		//Implement code to Generate START Condition
+		I2C_GenerateStartCondition(pI2CHandle->i2cx);
+
+		//Implement the code to enable ITBUFEN Control Bit
+		pI2CHandle->i2cx->CR2 |= (1 << I2C_CR2_ITBUFEN);
+
+		//Implement the code to enable ITEVFEN Control Bit
+		pI2CHandle->i2cx->CR2 |= (1 << I2C_CR2_ITEVTEN);
+
+		//Implement the code to enable ITERREN Control Bit
+		pI2CHandle->i2cx->CR2 |= (1 << I2C_CR2_ITERREN);
+	}
+
+	return busyState;
 }
 
 uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer,
 		uint32_t len, uint8_t slaveAddress, uint8_t sr) {
-	return 0;
+	uint8_t busyState = pI2CHandle->state;
+
+	if ((busyState != I2C_STATE_BUSY_IN_TX)
+			&& (busyState != I2C_STATE_BUSY_IN_RX)) {
+		pI2CHandle->pTxBuffer = pRxBuffer;
+		pI2CHandle->rxLen = len;
+		pI2CHandle->state = I2C_STATE_BUSY_IN_RX;
+		pI2CHandle->devAddr = slaveAddress;
+		pI2CHandle->sr = sr;
+
+		//Implement code to Generate START Condition
+		I2C_GenerateStartCondition(pI2CHandle->i2cx);
+
+		//Implement the code to enable ITBUFEN Control Bit
+		pI2CHandle->i2cx->CR2 |= (1 << I2C_CR2_ITBUFEN);
+
+		//Implement the code to enable ITEVFEN Control Bit
+		pI2CHandle->i2cx->CR2 |= (1 << I2C_CR2_ITEVTEN);
+
+		//Implement the code to enable ITERREN Control Bit
+		pI2CHandle->i2cx->CR2 |= (1 << I2C_CR2_ITERREN);
+	}
+
+	return busyState;
 }
 
 _weak void I2C_AppEventCallback(I2C_Handle_t *pI2CHandle, uint8_t event) {

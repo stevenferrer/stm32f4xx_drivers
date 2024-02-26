@@ -24,7 +24,7 @@ typedef struct I2C_Handle_t {
 	uint8_t *pRxBuffer; // rx buffer
 	uint32_t txLen; // tx len
 	uint32_t rxLen; // rx len
-	uint8_t commState;  // communication state
+	uint8_t state;  // communication state
 	uint8_t devAddr; // slave/device address
 	uint32_t rxSize; // rx size
 	uint8_t sr; // repeated start
