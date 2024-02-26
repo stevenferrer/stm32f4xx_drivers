@@ -110,6 +110,8 @@ uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer,
  */
 void I2C_IRQInterruptConfig(uint8_t irqNumber, uint8_t enable);
 void I2C_IRQPriorityConfig(uint8_t irqNumber, uint8_t irqPriority);
+void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle);
+void I2C_ERR_IRQHandling(I2C_Handle_t *pI2CHandle);
 
 void I2C_AppEventCallback(I2C_Handle_t *pI2Candle, uint8_t event);
 
