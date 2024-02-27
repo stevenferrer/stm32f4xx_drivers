@@ -85,6 +85,14 @@ typedef struct I2C_Handle_t {
 #define I2C_STATE_BUSY_IN_TX 2
 
 /*
+ * I2C application event macros
+ */
+
+#define I2C_EV_TX_CMPLT 0
+#define I2C_EV_RX_CMPLT 1
+#define I2C_EV_STOP 2
+
+/*
  * Peripheral clock setup
  */
 void I2C_PeriClockCtrl(I2C_RegDef_t *pI2Cx, uint8_t enable);
