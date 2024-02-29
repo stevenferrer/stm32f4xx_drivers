@@ -77,7 +77,7 @@
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Inc"/>
-						<entry excluding="examples/example8_i2c_master_tx_testing.c|sysmem.c|syscalls.c|examples/example6_spi_cmd_handling.c|examples/example5_spi_txonly_arduino.c|examples/example2_led_buttons.c|examples/example3_button_interrupt.c|examples/example4_spi_tx.c|examples/example1_blinky.c|examples/example1_blinky_ext.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
+						<entry excluding="examples/example9_i2c_master_rx_testing.c|examples/example8_i2c_master_tx_testing.c|sysmem.c|syscalls.c|examples/example6_spi_cmd_handling.c|examples/example5_spi_txonly_arduino.c|examples/example2_led_buttons.c|examples/example3_button_interrupt.c|examples/example4_spi_tx.c|examples/example1_blinky.c|examples/example1_blinky_ext.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Startup"/>
 					</sourceEntries>
 				</configuration>
@@ -150,7 +150,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Inc"/>
-						<entry excluding="examples/example8_i2c_master_tx_testing.c|sysmem.c|syscalls.c|examples/example6_spi_cmd_handling.c|examples/example5_spi_txonly_arduino.c|examples/example2_led_buttons.c|examples/example3_button_interrupt.c|examples/example4_spi_tx.c|examples/example1_blinky.c|examples/example1_blinky_ext.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
+						<entry excluding="examples/example9_i2c_master_rx_testing.c|examples/example8_i2c_master_tx_testing.c|sysmem.c|syscalls.c|examples/example6_spi_cmd_handling.c|examples/example5_spi_txonly_arduino.c|examples/example2_led_buttons.c|examples/example3_button_interrupt.c|examples/example4_spi_tx.c|examples/example1_blinky.c|examples/example1_blinky_ext.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Startup"/>
 					</sourceEntries>
 				</configuration>

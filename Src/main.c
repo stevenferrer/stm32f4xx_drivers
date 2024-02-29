@@ -11,13 +11,13 @@
 // when not in debug mode
 
 // Note: Comment when in Run mode
-//extern void initialise_monitor_handles();
+extern void initialise_monitor_handles();
 
 int main(void) {
-//	initialise_monitor_handles();
+	initialise_monitor_handles();
 
-//	printf("lorem ipsum dolor sit amet.\n");
+	printf("lorem ipsum dolor sit amet.\n");
 
-	i2c_master_rx();
+	i2c_master_rx_it();
 	return 0;
 }
