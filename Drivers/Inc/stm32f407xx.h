@@ -196,6 +196,16 @@ typedef struct I2C_RegDef_t {
 	_reg FLTR;
 } I2C_RegDef_t;
 
+typedef struct USART_RegDef_t {
+	_reg SR;
+	_reg DR;
+	_reg BRR;
+	_reg CR1;
+	_reg CR2;
+	_reg CR3;
+	_reg GTPR;
+} USART_RegDef_t;
+
 /*
  * Peripheral definitions
  */
@@ -223,6 +233,9 @@ typedef struct I2C_RegDef_t {
 #define I2C1 ((I2C_RegDef_t*)I2C1_BASE_ADDR)
 #define I2C2 ((I2C_RegDef_t*)I2C2_BASE_ADDR)
 #define I2C3 ((I2C_RegDef_t*)I2C3_BASE_ADDR)
+
+#define USART1 ((USART_RegDef_t*)USART1_BASE_ADDR);
+#define USART6 ((USART_RegDef_t*)USART6_BASE_ADDR);
 
 /*
  * Clock enable macros for GPIOx peripherals
