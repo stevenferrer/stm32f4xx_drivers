@@ -528,4 +528,6 @@ typedef struct USART_RegDef_t {
 #define USART_SR_LBD        			8
 #define USART_SR_CTS        			9
 
+#define USART_BRR_DIV_MANTISSA 4
+
 #endif /* INC_STM32F407XX_H_ */

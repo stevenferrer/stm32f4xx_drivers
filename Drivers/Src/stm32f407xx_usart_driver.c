@@ -7,6 +7,7 @@
 
 #include "stm32f407xx.h"
 #include "stm32f407xx_usart_driver.h"
+#include "stm32f407xx_rcc_driver.h"
 
 /*
  * Peripheral Clock setup
@@ -31,7 +32,7 @@ void USART_Init(USART_Handle_t *pUSARTHandle) {
 	uint32_t tempreg = 0;
 
 	/*
-	 * CR1 configruation
+	 * CR1 configuration
 	 */
 
 	// Enable the Clock for given USART peripheral
@@ -111,7 +112,70 @@ void USART_Init(USART_Handle_t *pUSARTHandle) {
 	 * BRR configuration
 	 */
 
-	// TODO: Implement the code to configure the baud rate
+	USART_SetBaudRate(pUSARTHandle->usartx, pUSARTHandle->config.Baud);
+}
+
+void USART_SetBaudRate(USART_RegDef_t *pUSARTx, uint32_t BaudRate) {
+
+	//Variable to hold the APB clock
+	uint32_t PCLKx;
+
+	uint32_t usartdiv;
+
+	//variables to hold Mantissa and Fraction values
+	uint32_t M_part, F_part;
+
+	uint32_t tempreg = 0;
+
+	//Get the value of APB bus clock in to the variable PCLKx
+	if (pUSARTx == USART1 || pUSARTx == USART6) {
+		//USART1 and USART6 are hanging on APB2 bus
+		PCLKx = RCC_GetPclk2Value();
+	} else {
+		PCLKx = RCC_GetPclk1Value();
+	}
+
+	//Check for OVER8 configuration bit
+	if (pUSARTx->CR1 & (1 << USART_CR1_OVER8)) {
+		// Note: The formula was originally multiplied by 100 to
+		// get whole numbers instead of dealing with floating point.
+		// The code below was simplified by dividing 4 to both
+		// numerator and denominator
+
+		//OVER8 = 1 , over sampling by 8
+		usartdiv = ((25 * PCLKx) / (2 * BaudRate));
+	} else {
+		//over sampling by 16
+		usartdiv = ((25 * PCLKx) / (4 * BaudRate));
+	}
+
+	//Calculate the Mantissa part
+	M_part = usartdiv / 100;
+
+	//Place the Mantissa part in appropriate bit position . refer USART_BRR
+	tempreg |= M_part << USART_BRR_DIV_MANTISSA;
+
+	//Extract the fraction part
+	F_part = (usartdiv - (M_part * 100));
+
+	//Calculate the final fractional
+	if (pUSARTx->CR1 & (1 << USART_CR1_OVER8)) {
+		//OVER8 = 1 , over sampling by 8
+		// Note: The mask 3-bits (0x07)
+		F_part = (((F_part * 8) + 50) / 100) & ((uint8_t) 0x07);
+
+	} else {
+		//over sampling by 16
+		// mask 4-bits (0x0f)
+		F_part = (((F_part * 16) + 50) / 100) & ((uint8_t) 0x0F);
+
+	}
+
+	//Place the fractional part in appropriate bit position . refer USART_BRR
+	tempreg |= F_part; // Fractional part is at 0th position
+
+	//copy the value of tempreg in to BRR register
+	pUSARTx->BRR = tempreg;
 }
 
 void USART_DeInit(USART_RegDef_t *pUSARTx) {

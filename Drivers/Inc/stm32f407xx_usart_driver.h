@@ -118,6 +118,8 @@ void USART_PeripheralControl(USART_RegDef_t *pUSARTx, uint8_t enable);
 uint8_t USART_GetFlagStatus(USART_RegDef_t *pUSARTx, uint32_t mask);
 void USART_ClearFlag(USART_RegDef_t *pUSARTx, uint16_t flag);
 
+void USART_SetBaudRate(USART_RegDef_t *pUSARTx, uint32_t baudRate);
+
 /*
  * Application callback
  */
