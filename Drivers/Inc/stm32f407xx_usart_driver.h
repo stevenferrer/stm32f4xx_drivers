@@ -14,15 +14,15 @@ typedef struct USART_Config_t {
 	uint8_t Mode;
 	uint8_t Baud;
 	uint8_t NoOfStopBits;
-	uint8_t WordLen;
+	uint8_t WordLength;
 	uint8_t ParityControl;
 	uint8_t HWFlowControl;
-};
+} USART_Config_t;
 
 typedef struct USART_Handle_t {
 	USART_RegDef_t *usartx;
 	USART_Config_t config;
-};
+} USART_Handle_t;
 
 /*
  *@USART_Mode
