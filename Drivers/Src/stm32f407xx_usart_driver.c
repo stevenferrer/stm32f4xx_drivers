@@ -110,11 +110,18 @@ void USART_IRQHandling(USART_Handle_t *pUSARTHandle) {
  * Other Peripheral Control APIs
  */
 void USART_PeripheralControl(USART_RegDef_t *pUSARTx, uint8_t enable) {
-
+	if (enable == ENABLE) {
+		pUSARTx->CR1 |= (1 << USART_CR1_UE);
+	} else {
+		pUSARTx->CR1 &= ~(1 << USART_CR1_UE);
+	}
 }
 
 uint8_t USART_GetFlagStatus(USART_RegDef_t *pUSARTx, uint32_t mask) {
-	return 0;
+	if (pUSARTx->SR1 & mask) {
+		return FLAG_SET;
+	}
+	return FLAG_RESET;
 }
 
 void USART_ClearFlag(USART_RegDef_t *pUSARTx, uint16_t flag) {
