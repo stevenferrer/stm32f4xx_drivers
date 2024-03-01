@@ -133,6 +133,7 @@ void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer,
 		// Check the USART_WordLength item for 9BIT or 8BIT in a frame
 		if (pUSARTHandle->config.WordLength == USART_WORDLEN_9BITS) {
 			// if 9BIT, load the DR with 2bytes masking the bits other than first 9 bits
+			// masking is done to make sure only 9-bits (0x01ff) is written
 			pdata = (uint16_t*) pTxBuffer;
 			pUSARTHandle->usartx->DR = (*pdata & (uint16_t) 0x01FF);
 
@@ -149,6 +150,7 @@ void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer,
 			}
 		} else {
 			// This is 8bit data transfer
+			// Note: Cast to `uint8_t` seems redundant as per course comments.
 			pUSARTHandle->usartx->DR = (*pTxBuffer & (uint8_t) 0xFF);
 
 			// Increment the buffer address
@@ -187,8 +189,7 @@ void USART_ReceiveData(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer,
 				pRxBuffer++;
 			} else {
 				//Parity is used, so, 8bits will be of user data and 1 bit is parity
-				*pRxBuffer = (pUSARTHandle->usartx->DR
-						& (uint8_t) 0xFF);
+				*pRxBuffer = (pUSARTHandle->usartx->DR & (uint8_t) 0xFF);
 
 				//Increment the pRxBuffer
 				pRxBuffer++;
@@ -201,7 +202,8 @@ void USART_ReceiveData(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer,
 				//No parity is used , so all 8bits will be of user data
 
 				//read 8 bits from DR
-				*pRxBuffer = (uint8_t) (pUSARTHandle->usartx->DR & (uint8_t)0xFF);
+				*pRxBuffer = (uint8_t) (pUSARTHandle->usartx->DR
+						& (uint8_t) 0xFF);
 			}
 
 			else {
