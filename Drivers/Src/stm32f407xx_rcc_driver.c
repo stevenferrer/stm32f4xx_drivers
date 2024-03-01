@@ -17,8 +17,11 @@ uint32_t RCC_GetPLLOutputClock(void) {
 
 uint32_t RCC_GetPclk1Value(void) {
 	// See reference manual for RCC->CFGR->SWS
+
+	uint8_t ahbp, apb1p;
 	uint8_t clkSrc = (RCC->CFGR >> 2) & 0x3;
 
+	// clock source
 	uint32_t sysClk;
 	if (clkSrc == 0) {
 		// hsi
@@ -30,22 +33,20 @@ uint32_t RCC_GetPclk1Value(void) {
 		sysClk = RCC_GetPLLOutputClock();
 	}
 
-	uint8_t ahbpReg = (RCC->CFGR >> 4) & 0xf;
-
-	uint8_t ahbp = 1;
-	if (ahbp < 8) {
+	// ahb prescaler
+	uint8_t ahbpPos = (RCC->CFGR >> 4) & 0xf;
+	if (ahbpPos < 8) {
 		ahbp = 1;
 	} else {
-		ahbp = AHB_PreScaler[ahbpReg - 8];
+		ahbp = AHB_PreScaler[ahbpPos - 8];
 	}
 
-	uint8_t apb1pReg = (RCC->CFGR >> 10) & 0x7;
-
-	uint8_t apb1p = 1;
-	if (apb1pReg < 4) {
+	// apb1 prescaler
+	uint8_t apb1pPos = (RCC->CFGR >> 10) & 0x7;
+	if (apb1pPos < 4) {
 		apb1p = 1;
 	} else {
-		apb1p = APB_PreScaler[apb1pReg - 4];
+		apb1p = APB_PreScaler[apb1pPos - 4];
 	}
 
 	uint32_t pclk1 = (sysClk / ahbp) / apb1p;
@@ -54,5 +55,32 @@ uint32_t RCC_GetPclk1Value(void) {
 }
 
 uint32_t RCC_GetPclk2Value(void) {
-	return 0;
+	uint32_t sysClk = 0, pclk2;
+
+	uint8_t ahbp, apb2p;
+
+	uint8_t clkSrc = ( RCC->CFGR >> 2) & 0X3;
+	if (clkSrc == 0) {
+		sysClk = 16000000;
+	} else {
+		sysClk = 8000000;
+	}
+
+	uint32_t ahbpPos = (RCC->CFGR >> 4) & 0xF;
+	if (ahbpPos < 0x08) {
+		ahbp = 1;
+	} else {
+		ahbp = AHB_PreScaler[ahbpPos - 8];
+	}
+
+	uint32_t apb2pPos = (RCC->CFGR >> 13) & 0x7;
+	if (apb2pPos < 0x04) {
+		apb2p = 1;
+	} else {
+		apb2p = APB_PreScaler[apb2pPos - 4];
+	}
+
+	pclk2 = (sysClk / ahbp) / apb2p;
+
+	return pclk2;
 }
