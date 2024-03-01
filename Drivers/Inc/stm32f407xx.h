@@ -234,8 +234,8 @@ typedef struct USART_RegDef_t {
 #define I2C2 ((I2C_RegDef_t*)I2C2_BASE_ADDR)
 #define I2C3 ((I2C_RegDef_t*)I2C3_BASE_ADDR)
 
-#define USART1 ((USART_RegDef_t*)USART1_BASE_ADDR);
-#define USART6 ((USART_RegDef_t*)USART6_BASE_ADDR);
+#define USART1 ((USART_RegDef_t*)USART1_BASE_ADDR)
+#define USART6 ((USART_RegDef_t*)USART6_BASE_ADDR)
 
 /*
  * Clock enable macros for GPIOx peripherals
