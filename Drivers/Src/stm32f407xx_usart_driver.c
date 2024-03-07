@@ -191,7 +191,7 @@ void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer,
 	// Loop over until len number of bytes are transferred
 	for (uint32_t i = 0; i < len; i++) {
 		// Wait until TXE flag is set in the SR
-		while (!USART_GetFlagStatus(pUSARTHandle->usartx, USART_SR_TXE))
+		while (!USART_GetFlagStatus(pUSARTHandle->usartx, USART_FLAG_TXE))
 			;
 
 		// Check the USART_WordLength item for 9BIT or 8BIT in a frame
@@ -199,7 +199,7 @@ void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer,
 			// if 9BIT, load the DR with 2bytes masking the bits other than first 9 bits
 			// masking is done to make sure only 9-bits (0x01ff) is written
 			pdata = (uint16_t*) pTxBuffer;
-			pUSARTHandle->usartx->DR = (*pdata & (uint16_t) 0x01FF);
+			pUSARTHandle->usartx->DR = (*pdata & (uint16_t) 0x01ff);
 
 			// check for USART_ParityControl
 			if (pUSARTHandle->config.ParityControl == USART_PARITY_DISABLE) {
@@ -215,7 +215,7 @@ void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer,
 		} else {
 			// This is 8bit data transfer
 			// Note: Cast to `uint8_t` seems redundant as per course comments.
-			pUSARTHandle->usartx->DR = (*pTxBuffer & (uint8_t) 0xFF);
+			pUSARTHandle->usartx->DR = (*pTxBuffer & (uint8_t) 0xff);
 
 			// Increment the buffer address
 			pTxBuffer++;
@@ -223,7 +223,7 @@ void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer,
 	}
 
 	//Implement the code to wait till TC flag is set in the SR
-	while (!USART_GetFlagStatus(pUSARTHandle->usartx, USART_SR_TC))
+	while (!USART_GetFlagStatus(pUSARTHandle->usartx, USART_FLAG_TC))
 		;
 }
 
@@ -233,7 +233,7 @@ void USART_ReceiveData(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer,
 	//Loop over until "len" number of bytes are transferred
 	for (uint32_t i = 0; i < len; i++) {
 		//Implement the code to wait until RXNE flag is set in the SR
-		while (!USART_GetFlagStatus(pUSARTHandle->usartx, USART_SR_RXNE))
+		while (!USART_GetFlagStatus(pUSARTHandle->usartx, USART_FLAG_RXNE))
 			;
 
 		//Check the USART_WordLength to decide whether we are going to receive 9bit of data in a frame or 8 bit

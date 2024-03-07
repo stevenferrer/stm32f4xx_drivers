@@ -59,7 +59,7 @@ uint32_t RCC_GetPclk2Value(void) {
 
 	uint8_t ahbp, apb2p;
 
-	uint8_t clkSrc = ( RCC->CFGR >> 2) & 0X3;
+	uint8_t clkSrc = ( RCC->CFGR >> 2) & 0x3;
 	if (clkSrc == 0) {
 		sysClk = 16000000;
 	} else {

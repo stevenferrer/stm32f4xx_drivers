@@ -12,7 +12,7 @@
 
 typedef struct USART_Config_t {
 	uint8_t Mode;
-	uint8_t Baud;
+	uint32_t Baud;
 	uint8_t NoOfStopBits;
 	uint8_t WordLength;
 	uint8_t ParityControl;
@@ -81,6 +81,11 @@ typedef struct USART_Handle_t {
 #define USART_HW_FLOW_CTRL_CTS    	1
 #define USART_HW_FLOW_CTRL_RTS    	2
 #define USART_HW_FLOW_CTRL_CTS_RTS	3
+
+#define USART_FLAG_TXE (1 << USART_SR_TXE)
+#define USART_FLAG_RXNE (1 << USART_SR_RXNE)
+#define USART_FLAG_TC (1 << USART_SR_TC)
+
 
 /*
  * Peripheral Clock setup

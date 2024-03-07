@@ -18,7 +18,7 @@ uint8_t rxComplt = RESET;
 #define MY_ADDR 0x61
 #define SLAVE_ADDR 0x68
 
-I2C_Handle_t i2c1Handle;
+I2C_Handle_t usart2Handle;
 
 // receive buffer
 uint8_t receiveBuffer[32];
@@ -48,13 +48,13 @@ void I2C1_GPIO_Init(void) {
 }
 
 void I2C1_Init(void) {
-	i2c1Handle.i2cx = I2C1;
-	i2c1Handle.config.ACKControl = I2C_ACK_ENABLE;
-	i2c1Handle.config.DeviceAddress = MY_ADDR;
-	i2c1Handle.config.FMDutyCycle = I2C_FM_DUTY_2;
-	i2c1Handle.config.SCLSpeed = I2C_SCL_SPEED_STD;
+	usart2Handle.i2cx = I2C1;
+	usart2Handle.config.ACKControl = I2C_ACK_ENABLE;
+	usart2Handle.config.DeviceAddress = MY_ADDR;
+	usart2Handle.config.FMDutyCycle = I2C_FM_DUTY_2;
+	usart2Handle.config.SCLSpeed = I2C_SCL_SPEED_STD;
 
-	I2C_Init(&i2c1Handle);
+	I2C_Init(&usart2Handle);
 }
 
 void GPIO_Button_Init(void) {
@@ -94,7 +94,7 @@ int i2c_master_rx_it(void) {
 			delay(2);
 
 			commandCode = 0x51;
-			while (I2C_MasterSendDataIT(&i2c1Handle, &commandCode, 1,
+			while (I2C_MasterSendDataIT(&usart2Handle, &commandCode, 1,
 			SLAVE_ADDR,
 			I2C_SR_DISABLE) != I2C_STATE_READY) {
 			}
@@ -131,11 +131,11 @@ int i2c_master_rx_it(void) {
 }
 
 void I2C1_EV_IRQHandler(void) {
-	I2C_EV_IRQHandling(&i2c1Handle);
+	I2C_EV_IRQHandling(&usart2Handle);
 }
 
 void I2C1_ER_IRQHandler(void) {
-	I2C_ER_IRQHandling(&i2c1Handle);
+	I2C_ER_IRQHandling(&usart2Handle);
 }
 
 void I2C_AppEventCallback(I2C_Handle_t *pI2CHandle, uint8_t event) {

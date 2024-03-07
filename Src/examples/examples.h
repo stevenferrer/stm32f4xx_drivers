@@ -28,4 +28,6 @@ void i2c_master_rx(void);
 
 void i2c_master_rx_it(void);
 
+void usart_tx(void);
+
 #endif /* EXAMPLES_EXAMPLES_H_ */

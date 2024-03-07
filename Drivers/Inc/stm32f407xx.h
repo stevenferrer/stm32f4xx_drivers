@@ -237,6 +237,8 @@ typedef struct USART_RegDef_t {
 #define USART1 ((USART_RegDef_t*)USART1_BASE_ADDR)
 #define USART6 ((USART_RegDef_t*)USART6_BASE_ADDR)
 
+#define USART2 ((USART_RegDef_t*)USART2_BASE_ADDR)
+
 /*
  * Clock enable macros for GPIOx peripherals
  */
