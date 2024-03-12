@@ -371,36 +371,6 @@ void USART_IRQPriorityConfig(uint8_t irqNumber, uint32_t irqPriority) {
 
 void USART_IRQHandling(USART_Handle_t *pUSARTHandle) {
 
-}
-
-/*
- * Other Peripheral Control APIs
- */
-void USART_PeripheralControl(USART_RegDef_t *pUSARTx, uint8_t enable) {
-	if (enable == ENABLE) {
-		pUSARTx->CR1 |= (1 << USART_CR1_UE);
-	} else {
-		pUSARTx->CR1 &= ~(1 << USART_CR1_UE);
-	}
-}
-
-uint8_t USART_GetFlagStatus(USART_RegDef_t *pUSARTx, uint32_t mask) {
-	if (pUSARTx->SR & mask) {
-		return FLAG_SET;
-	}
-	return FLAG_RESET;
-}
-
-void USART_ClearFlag(USART_RegDef_t *pUSARTx, uint16_t flag) {
-
-}
-
-/*
- * Application callback
- */
-_weak void USART_ApplicationEventCallback(USART_Handle_t *pUSARTHandle,
-		uint8_t appEvent) {
-
 	uint32_t temp1, temp2, temp3;
 	uint16_t *pdata;
 
@@ -533,8 +503,8 @@ _weak void USART_ApplicationEventCallback(USART_Handle_t *pUSARTHandle,
 						pUSARTHandle->rxLen -= 2;
 					} else {
 						//Parity is used. so, 8bits will be of user data and 1 bit is parity
-						*pUSARTHandle->pRxBuffer =
-								(pUSARTHandle->usartx->DR & (uint8_t) 0xFF);
+						*pUSARTHandle->pRxBuffer = (pUSARTHandle->usartx->DR
+								& (uint8_t) 0xFF);
 
 						//Now increment the pRxBuffer
 						pUSARTHandle->pRxBuffer++;
@@ -668,5 +638,35 @@ _weak void USART_ApplicationEventCallback(USART_Handle_t *pUSARTHandle,
 			USART_ApplicationEventCallback(pUSARTHandle, USART_ERR_ORE);
 		}
 	}
+
+}
+
+/*
+ * Other Peripheral Control APIs
+ */
+void USART_PeripheralControl(USART_RegDef_t *pUSARTx, uint8_t enable) {
+	if (enable == ENABLE) {
+		pUSARTx->CR1 |= (1 << USART_CR1_UE);
+	} else {
+		pUSARTx->CR1 &= ~(1 << USART_CR1_UE);
+	}
+}
+
+uint8_t USART_GetFlagStatus(USART_RegDef_t *pUSARTx, uint32_t mask) {
+	if (pUSARTx->SR & mask) {
+		return FLAG_SET;
+	}
+	return FLAG_RESET;
+}
+
+void USART_ClearFlag(USART_RegDef_t *pUSARTx, uint16_t flag) {
+
+}
+
+/*
+ * Application callback
+ */
+_weak void USART_ApplicationEventCallback(USART_Handle_t *pUSARTHandle,
+		uint8_t appEvent) {
 
 }
