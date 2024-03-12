@@ -97,6 +97,14 @@ typedef struct USART_Handle_t {
 #define USART_BUSY_IN_RX 1
 #define USART_BUSY_IN_TX 2
 
+#define USART_EVENT_TX_CMPLT 0
+#define USART_EVENT_RX_CMPLT 1
+#define USART_EVENT_IDLE 2
+#define USART_EVENT_CTS 3
+#define USART_EVENT_PE 4
+#define USART_ERR_FE 5
+#define USART_ERR_NE 6
+#define USART_ERR_ORE 7
 
 /*
  * Peripheral Clock setup
@@ -112,7 +120,8 @@ void USART_DeInit(USART_RegDef_t *pUSARTx);
 /*
  * Data Send and Receive
  */
-void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer, uint32_t len);
+void USART_SendData(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer,
+		uint32_t len);
 void USART_ReceiveData(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer,
 		uint32_t len);
 uint8_t USART_SendDataIT(USART_Handle_t *pUSARTHandle, uint8_t *pTxBuffer,
