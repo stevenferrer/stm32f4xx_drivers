@@ -375,6 +375,13 @@ typedef struct USART_RegDef_t {
 #define IRQ_NO_I2C3_EV 72
 #define IRQ_NO_I2C3_ER 73
 
+#define IRQ_NO_USART1 37
+#define IRQ_NO_USART2 38
+#define IRQ_NO_USART3 39
+#define IRQ_NO_USART4 52
+#define IRQ_NO_USART5 53
+#define IRQ_NO_USART6 71
+
 #define NVIC_IRQ_PRIORITY_0 0
 #define NVIC_IRQ_PRIORITY_15 15
 
