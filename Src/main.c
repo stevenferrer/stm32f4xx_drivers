@@ -7,17 +7,16 @@
 #include <stdio.h>
 #include "examples/examples.h"
 
-// TODO: Find a way to remove initialise_monitor_handles
-// when not in debug mode
+// TODO: Find a way to remove initialise_monitor_handles when not in debug mode
 
 // Note: Comment when in Run mode
-//extern void initialise_monitor_handles();
+extern void initialise_monitor_handles();
 
 int main(void) {
-//	initialise_monitor_handles();
+	initialise_monitor_handles();
 
-//	printf("lorem ipsum dolor sit amet.\n");
+	printf("lorem ipsum dolor sit amet.\n");
 
-	usart_tx();
+	usart_case();
 	return 0;
 }

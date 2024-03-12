@@ -314,7 +314,8 @@ uint8_t USART_ReceiveDataIT(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer,
 		pUSARTHandle->pRxBuffer = pRxBuffer;
 		pUSARTHandle->rxBusyState = USART_BUSY_IN_RX;
 
-		(void) pUSARTHandle->usartx->DR;
+		// clear RXNE flag by reading DR register
+//		(void) pUSARTHandle->usartx->DR;
 
 		//Implement the code to enable interrupt for RXNE
 		pUSARTHandle->usartx->CR1 |= (1 << USART_CR1_RXNEIE);
@@ -335,7 +336,7 @@ void USART_IRQInterruptConfig(uint8_t irqNumber, uint8_t enable) {
 		} else if (irqNumber > 31 && irqNumber < 64) {
 			// ISER1
 			*NVIC_ISER1 |= (1 << (irqNumber % 32));
-		} else if (irqNumber > 64 && irqNumber < 96) {
+		} else if (irqNumber >= 64 && irqNumber < 96) {
 			// ISER2
 			*NVIC_ISER2 |= (1 << (irqNumber % 64));
 		}
@@ -348,7 +349,7 @@ void USART_IRQInterruptConfig(uint8_t irqNumber, uint8_t enable) {
 		} else if (irqNumber > 31 && irqNumber < 64) {
 			// ICER1
 			*NVIC_ICER1 |= (1 << irqNumber % 32);
-		} else if (irqNumber > 64 && irqNumber < 96) {
+		} else if (irqNumber >= 64 && irqNumber < 96) {
 			// ICER2
 			*NVIC_ICER2 |= (1 << irqNumber % 64);
 		}
