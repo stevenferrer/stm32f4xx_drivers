@@ -22,6 +22,13 @@ typedef struct USART_Config_t {
 typedef struct USART_Handle_t {
 	USART_RegDef_t *usartx;
 	USART_Config_t config;
+
+	uint32_t txLen;
+	uint32_t rxLen;
+	uint8_t *pTxBuffer;
+	uint8_t *pRxBuffer;
+	uint8_t txBusyState;
+	uint8_t rxBusyState;
 } USART_Handle_t;
 
 /*
@@ -85,6 +92,10 @@ typedef struct USART_Handle_t {
 #define USART_FLAG_TXE (1 << USART_SR_TXE)
 #define USART_FLAG_RXNE (1 << USART_SR_RXNE)
 #define USART_FLAG_TC (1 << USART_SR_TC)
+
+#define USART_READY 0
+#define USART_BUSY_IN_RX 1
+#define USART_BUSY_IN_TX 2
 
 
 /*
